@@ -9,7 +9,7 @@
     <nav class="flex">
       <ul class="flex gap-4 justify-center p-4">
         <li>
-          <router-link to="/" class="text-white hover:underline">Heroes</router-link>
+          <router-link :to="{ name: 'heroes' }" class="text-white hover:underline">Heroes</router-link>
         </li>
         <li>
           <router-link to="/about" class="text-white hover:underline">Dungeons</router-link>

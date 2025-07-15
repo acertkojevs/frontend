@@ -2,7 +2,6 @@
 
 function deleteData() {
   localStorage.removeItem("data")
-  // console.log('Data deleted')
 }
 
 </script>
