@@ -15,7 +15,7 @@
           <router-link to="/about" class="text-white hover:underline">Dungeons</router-link>
         </li>
         <li>
-          <router-link to="/contact" class="text-white hover:underline">Settings</router-link>
+          <router-link :to="{ name: 'settings' }" class="text-white hover:underline">Settings</router-link>
         </li>
       </ul>
     </nav>
