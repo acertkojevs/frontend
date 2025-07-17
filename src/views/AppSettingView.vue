@@ -9,7 +9,7 @@ function deleteData() {
 <template>
   <section class="flex items-center justify-between ">
 
-    <button :onclick="deleteData">
+    <button @click="deleteData">
       Delete Data
     </button>
   </section>
