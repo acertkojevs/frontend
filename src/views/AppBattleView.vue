@@ -16,6 +16,7 @@ async function startBattle() {
 
   userSkills(); //cast user skills
   userStaminaRestore(); //restores user stamina calculation
+  userVitalityRestore(); //restores user vitality calculation
 }
 
 async function userSkills() {
@@ -62,6 +63,17 @@ async function userStaminaRestore() {
       selectedclass.baseStats.stamina += selectedclass.baseStats.staminaRecover;
     }
   }, selectedclass.baseStats.staminaRecoverInterval);
+}
+
+async function userVitalityRestore() {
+  const interval = setInterval(() => {
+    if (selectedclass.baseStats.health + selectedclass.baseStats.healthRegen >= selectedclass.baseStats.maxHealth) {
+      selectedclass.baseStats.health += selectedclass.baseStats.maxHealth;
+    }
+    else {
+      selectedclass.baseStats.health += selectedclass.baseStats.healthRegen;
+    }
+  }, selectedclass.baseStats.healthRegenInterval);
 }
 
 </script>

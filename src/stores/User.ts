@@ -62,16 +62,13 @@ type ClassData = {
   selectedMonster?: Monster | null;
 };
 
-
-
-
 const userData = ref<ClassData>({
   selectedClass: -1,
   classes: [
     {
       name: "Warrior",
       baseStats: {
-        health: 100,
+        health: 1,
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
