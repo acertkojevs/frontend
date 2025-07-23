@@ -12,7 +12,7 @@
           <router-link :to="{ name: 'heroes' }" class="text-white hover:underline">Heroes</router-link>
         </li>
         <li>
-          <router-link to="/about" class="text-white hover:underline">Dungeons</router-link>
+          <router-link :to="{ name: 'dungeon' }" class="text-white hover:underline">Dungeons</router-link>
         </li>
         <li>
           <router-link :to="{ name: 'settings' }" class="text-white hover:underline">Settings</router-link>

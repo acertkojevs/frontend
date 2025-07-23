@@ -1,0 +1,81 @@
+<script setup lang="ts">
+import { useUserStore } from '@/stores/User';
+
+const userStore = useUserStore();
+const selectedclass = userStore.userData.classes[userStore.userData.selectedClass];
+const monster = userStore.userData.selectedMonster;
+
+function getRandomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+async function startBattle() {
+
+  console.log('Starting battle with class:', selectedclass);
+  console.log('Starting battle with monster:', monster);
+
+  userSkills(); //cast user skills
+  userStaminaRestore(); //restores user stamina calculation
+}
+
+async function userSkills() {
+  selectedclass.baseStats.skills?.forEach(skill => {
+    if (skill.enabled) {
+      castSpell(skill);
+    }
+  });
+}
+
+async function castSpell(skill: any) {
+  const interval = setInterval(() => {
+    if (
+      selectedclass.baseStats.health <= 0 || (monster?.baseStats?.health ?? 0) <= 0
+    ) {
+      clearInterval(interval);
+      return;
+    }
+
+    // Check stamina
+    if (selectedclass.baseStats.stamina > skill.staminaCost) {
+      selectedclass.baseStats.stamina -= skill.staminaCost;
+    }
+    else {
+      console.log('Not enough stamina for skill:', skill.name);
+      return;
+    }
+
+    const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
+    if (monster) {
+      monster.baseStats.health -= dmg;
+    }
+
+    console.log(`${skill.name} hit for ${dmg}, monster HP: ${monster?.baseStats.health}`);
+  }, skill.cooldown);
+}
+
+async function userStaminaRestore() {
+  const interval = setInterval(() => {
+    if ((selectedclass.baseStats.stamina + selectedclass.baseStats.staminaRecover) >= selectedclass.baseStats.maxStamina) {
+      selectedclass.baseStats.stamina = selectedclass.baseStats.maxStamina;
+    }
+    else {
+      selectedclass.baseStats.stamina += selectedclass.baseStats.staminaRecover;
+    }
+  }, selectedclass.baseStats.staminaRecoverInterval);
+}
+
+</script>
+
+
+
+<template>
+  <h1 class="text-3xl font-bold p-4">
+    Battle Page
+  </h1>
+  <button @click="startBattle">
+    Start Battle
+  </button>
+  <div>
+    {{ selectedclass }}
+  </div>
+</template>

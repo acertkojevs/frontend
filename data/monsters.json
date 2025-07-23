@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "Slime",
+    "level": 1,
+    "baseStats": {
+      "health": 30,
+      "maxHealth": 30,
+      "minAttack": 2,
+      "maxAttack": 4
+    }
+  },
+  {
+    "id": 2,
+    "name": "test",
+    "level": 1,
+    "baseStats": {
+      "health": 1000,
+      "maxHealth": 1000,
+      "minAttack": 2,
+      "maxAttack": 4
+    }
+  }
+]
