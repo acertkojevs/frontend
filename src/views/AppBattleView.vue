@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import HeroSection from '@/components/HeroSection.vue';
+import MonsterSection from '@/components/MonsterSection.vue';
 import { useUserStore } from '@/stores/User';
 import { ref } from 'vue';
 
@@ -109,7 +111,8 @@ async function userVitalityRestore() {
   <button @click="startBattle">
     Start Battle
   </button>
-  <div>
-    {{ selectedclass }}
+  <div class="flex justify-between">
+    <HeroSection />
+    <MonsterSection />
   </div>
 </template>

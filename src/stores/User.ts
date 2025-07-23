@@ -20,8 +20,6 @@ type Skill = {
 export type MonsterStats = {
   health: number;
   maxHealth: number;
-  minAttack: number;
-  maxAttack: number;
 };
 
 export type Monster = {

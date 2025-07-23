@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User.ts'
 import { computed } from 'vue';
+import HeroSection from '@/components/HeroSection.vue';
 
 const userStore = useUserStore()
 const selectedclass = computed(() => {
@@ -24,25 +25,6 @@ function selectClass(classIndex: number) {
       </button>
 
     </div>
-    <div v-if="selectedclass" class="flex flex-col items-center">
-      <h1>Selected Class: {{ selectedclass.name }}</h1>
-      <div>Level: {{ selectedclass.baseStats.xp }}/{{ selectedclass.baseStats.xpToNextLevel }}</div>
-      <div>Level: {{ selectedclass.baseStats.level }}/{{ selectedclass.baseStats.maxLevel }}</div>
-      <div>{{ selectedclass.baseStats.unspentSkillPoints }}</div>
-      <div>HP: {{ selectedclass.baseStats.maxHealth }}</div>
-      <div>HP regen/sec {{ selectedclass.baseStats.healthRegen }} / {{ selectedclass.baseStats.healthRegenInterval }}
-      </div>
-      <div>Stamin: {{ selectedclass.baseStats.maxStamina }}</div>
-      <div>Stamin regen/sec {{ selectedclass.baseStats.staminaRecover }} / {{
-        selectedclass.baseStats.staminaRecoverInterval }}
-      </div>
-      <div>Stats:</div>
-      <div>vitality: {{ selectedclass.baseStats.vitality }}</div>
-      <div>endurance: {{ selectedclass.baseStats.endurance }}</div>
-      <div>power: {{ selectedclass.baseStats.power }}</div>
-      <div>dodge: {{ selectedclass.baseStats.dodge }}</div>
-      <div>resilience: {{ selectedclass.baseStats.resilience }}</div>
-      <div>luck: {{ selectedclass.baseStats.luck }}</div>
-    </div>
+    <HeroSection />
   </section>
 </template>

@@ -6,9 +6,7 @@
     "xp": 5,
     "baseStats": {
       "health": 30,
-      "maxHealth": 30,
-      "minAttack": 2,
-      "maxAttack": 4
+      "maxHealth": 30
     }
   },
   {
@@ -18,9 +16,7 @@
     "xp": 5,
     "baseStats": {
       "health": 1000,
-      "maxHealth": 1000,
-      "minAttack": 2,
-      "maxAttack": 4
+      "maxHealth": 1000
     }
   }
 ]
