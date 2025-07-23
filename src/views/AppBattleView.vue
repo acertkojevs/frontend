@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User';
+import { ref } from 'vue';
 
 const userStore = useUserStore();
 const selectedclass = userStore.userData.classes[userStore.userData.selectedClass];
 const monster = userStore.userData.selectedMonster;
+const battleOver = ref(userStore.userData.inBattle);
 
 function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 async function startBattle() {
-
   console.log('Starting battle with class:', selectedclass);
   console.log('Starting battle with monster:', monster);
 
@@ -28,11 +29,32 @@ async function userSkills() {
 }
 
 async function castSpell(skill: any) {
+
   const interval = setInterval(() => {
-    if (
-      selectedclass.baseStats.health <= 0 || (monster?.baseStats?.health ?? 0) <= 0
-    ) {
+    if (battleOver.value) {
       clearInterval(interval);
+      return;
+    }
+
+    if (!monster) {
+      clearInterval(interval);
+      battleOver.value = true;
+      return;
+    }
+
+    if (selectedclass.baseStats.health <= 0) {
+      clearInterval(interval);
+      battleOver.value = true;
+      return;
+    }
+
+    if (monster.baseStats.health <= 0) {
+      clearInterval(interval);
+      if (!battleOver.value) {
+        selectedclass.baseStats.xp += monster.xp;
+        console.log(`Gained ${monster.xp} XP from defeating ${monster.name}`);
+      }
+      battleOver.value = true;
       return;
     }
 
@@ -56,7 +78,7 @@ async function castSpell(skill: any) {
 
 async function userStaminaRestore() {
   const interval = setInterval(() => {
-    if ((selectedclass.baseStats.stamina + selectedclass.baseStats.staminaRecover) >= selectedclass.baseStats.maxStamina) {
+    if ((selectedclass.baseStats.stamina + selectedclass.baseStats.staminaRecover) >= selectedclass.baseStats.maxStamina && battleOver.value === true) {
       selectedclass.baseStats.stamina = selectedclass.baseStats.maxStamina;
     }
     else {
@@ -67,8 +89,8 @@ async function userStaminaRestore() {
 
 async function userVitalityRestore() {
   const interval = setInterval(() => {
-    if (selectedclass.baseStats.health + selectedclass.baseStats.healthRegen >= selectedclass.baseStats.maxHealth) {
-      selectedclass.baseStats.health += selectedclass.baseStats.maxHealth;
+    if (selectedclass.baseStats.health + selectedclass.baseStats.healthRegen >= selectedclass.baseStats.maxHealth && battleOver.value === true) {
+      selectedclass.baseStats.health = selectedclass.baseStats.maxHealth;
     }
     else {
       selectedclass.baseStats.health += selectedclass.baseStats.healthRegen;

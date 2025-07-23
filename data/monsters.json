@@ -3,6 +3,7 @@
     "id": 1,
     "name": "Slime",
     "level": 1,
+    "xp": 5,
     "baseStats": {
       "health": 30,
       "maxHealth": 30,
@@ -14,6 +15,7 @@
     "id": 2,
     "name": "test",
     "level": 1,
+    "xp": 5,
     "baseStats": {
       "health": 1000,
       "maxHealth": 1000,

@@ -29,15 +29,20 @@ export type Monster = {
   name: string;
   level: number;
   baseStats: MonsterStats;
+  xp: number;
+  skills?: Skill[];
 };
 
 type ClassStats = {
+  level: number;
+  maxLevel: number;
+  xp: number;
+  xpToNextLevel: number;
+  unspentSkillPoints: number;
   health: number;
   maxHealth: number;
   healthRegen: number;
   healthRegenInterval: number;
-  minAttack: number;
-  maxAttack: number;
   stamina: number;
   maxStamina: number;
   staminaRecover: number;
@@ -58,22 +63,28 @@ type Class = {
 
 type ClassData = {
   selectedClass: number;
-  classes: Class[];
   selectedMonster?: Monster | null;
+  classes: Class[];
+  inBattle: boolean,
 };
 
 const userData = ref<ClassData>({
   selectedClass: -1,
+  selectedMonster: null,
+  inBattle: false,
   classes: [
     {
       name: "Warrior",
       baseStats: {
+        level: 1,
+        maxLevel: 100,
+        xp: 0,
+        xpToNextLevel: 100,
+        unspentSkillPoints: 0,
         health: 1,
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-        minAttack: 1,
-        maxAttack: 10,
         stamina: 100,
         maxStamina: 100,
         staminaRecover: 20,
@@ -106,8 +117,7 @@ const userData = ref<ClassData>({
         ]
       }
     }
-  ],
-  selectedMonster: null
+  ]
 });
 
 
