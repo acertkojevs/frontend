@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User.ts'
+import { computed } from 'vue';
 
 const userStore = useUserStore()
-const selectedclass = userStore.userData.classes[userStore.userData.selectedClass];
+const selectedclass = computed(() => {
+  const index = userStore.userData.selectedClass;
+  return index >= 0 ? userStore.userData.classes[index] : null;
+});
 
 function selectClass(classIndex: number) {
   userStore.userData.selectedClass = classIndex;
@@ -13,20 +17,15 @@ function selectClass(classIndex: number) {
 <template>
   <section class="flex flex-row items-center justify-between">
     <div v-for="(hero, index) in userStore.userData?.classes" :key="index" class="flex flex-col items-center">
-
       <div>{{ index }}. {{ hero.name }}</div>
-      <div>{{ hero }}</div>
       <div>Level: {{ hero.baseStats.level }}/{{ hero.baseStats.maxLevel }}</div>
       <button @click="selectClass(index)" class="bg-blue-500 text-white px-4 py-2 rounded">
         Select {{ hero.name }}
       </button>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded">
-        View {{ hero.name }}
-      </button>
 
     </div>
-    <div v-show="userStore.userData.selectedClass !== -1" class="flex flex-col items-center">
-      <div>{{ selectedclass.name }}</div>
+    <div v-if="selectedclass" class="flex flex-col items-center">
+      <h1>Selected Class: {{ selectedclass.name }}</h1>
       <div>Level: {{ selectedclass.baseStats.xp }}/{{ selectedclass.baseStats.xpToNextLevel }}</div>
       <div>Level: {{ selectedclass.baseStats.level }}/{{ selectedclass.baseStats.maxLevel }}</div>
       <div>{{ selectedclass.baseStats.unspentSkillPoints }}</div>

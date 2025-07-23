@@ -15,6 +15,9 @@
           <router-link :to="{ name: 'dungeon' }" class="text-white hover:underline">Dungeons</router-link>
         </li>
         <li>
+          <router-link :to="{ name: 'achievements' }" class="text-white hover:underline">Achievements</router-link>
+        </li>
+        <li>
           <router-link :to="{ name: 'settings' }" class="text-white hover:underline">Settings</router-link>
         </li>
       </ul>

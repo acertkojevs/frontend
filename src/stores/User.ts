@@ -74,6 +74,50 @@ const userData = ref<ClassData>({
   inBattle: false,
   classes: [
     {
+      name: "Mage",
+      baseStats: {
+        level: 1,
+        maxLevel: 100,
+        xp: 0,
+        xpToNextLevel: 100,
+        unspentSkillPoints: 0,
+        health: 1,
+        maxHealth: 100,
+        healthRegen: 1,
+        healthRegenInterval: 2000,
+        stamina: 100,
+        maxStamina: 100,
+        staminaRecover: 20,
+        staminaRecoverInterval: 1000,
+        vitality: 0,
+        endurance: 0,
+        power: 0,
+        dodge: 0,
+        resilience: 0,
+        luck: 0,
+        skills: [
+          {
+            name: "Slash",
+            type: 'damage',
+            cooldown: 1000,
+            staminaCost: 10,
+            minDamage: 1,
+            maxDamage: 3,
+            enabled: true
+          },
+          {
+            name: "Mace hit",
+            type: 'damage',
+            cooldown: 3000,
+            staminaCost: 10,
+            minDamage: 5,
+            maxDamage: 15,
+            enabled: true
+          },
+        ]
+      }
+    },
+    {
       name: "Warrior",
       baseStats: {
         level: 1,
@@ -116,8 +160,53 @@ const userData = ref<ClassData>({
           },
         ]
       }
+    },
+    {
+      name: "Rogue",
+      baseStats: {
+        level: 1,
+        maxLevel: 100,
+        xp: 0,
+        xpToNextLevel: 100,
+        unspentSkillPoints: 0,
+        health: 1,
+        maxHealth: 100,
+        healthRegen: 1,
+        healthRegenInterval: 2000,
+        stamina: 100,
+        maxStamina: 100,
+        staminaRecover: 20,
+        staminaRecoverInterval: 1000,
+        vitality: 0,
+        endurance: 0,
+        power: 0,
+        dodge: 0,
+        resilience: 0,
+        luck: 0,
+        skills: [
+          {
+            name: "Slash",
+            type: 'damage',
+            cooldown: 1000,
+            staminaCost: 10,
+            minDamage: 1,
+            maxDamage: 3,
+            enabled: true
+          },
+          {
+            name: "Mace hit",
+            type: 'damage',
+            cooldown: 3000,
+            staminaCost: 10,
+            minDamage: 5,
+            maxDamage: 15,
+            enabled: true
+          },
+        ]
+      }
     }
-  ]
+  ],
+
 });
 
 
