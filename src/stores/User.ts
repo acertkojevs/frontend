@@ -28,6 +28,7 @@ export type Monster = {
   level: number;
   baseStats: MonsterStats;
   xp: number;
+  location: string;
   skills?: Skill[];
 };
 

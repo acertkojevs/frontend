@@ -4,6 +4,7 @@
     "name": "Slime",
     "level": 1,
     "xp": 5,
+    "location": "Forest",
     "baseStats": {
       "health": 30,
       "maxHealth": 30
@@ -11,12 +12,24 @@
   },
   {
     "id": 2,
-    "name": "test",
-    "level": 1,
-    "xp": 5,
+    "name": "Knight",
+    "level": 3,
+    "xp": 15,
+    "location": "Castle",
     "baseStats": {
-      "health": 1000,
-      "maxHealth": 1000
+      "health": 100,
+      "maxHealth": 100
+    }
+  },
+  {
+    "id": 3,
+    "name": "Red Golem",
+    "level": 5,
+    "xp": 40,
+    "location": "Castle",
+    "baseStats": {
+      "health": 200,
+      "maxHealth": 200
     }
   }
 ]

@@ -1,25 +1,43 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import monstersData from '@/../data/monsters.json';
+import type { Monster } from '@/stores/User';
 import { useUserStore } from '@/stores/User';
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore();
-const monster = userStore.userData.selectedMonster;
+const router = useRouter();
 
+const monsterLocations = ref<Record<string, Monster[]>>({});
+
+function addMonster(monster: number) {
+  userStore.setMonster(monstersData[monster]);
+  router.push({ name: 'battle' });
+}
+
+onMounted(() => {
+  // Group monsters by location
+  for (const monster of monstersData as Monster[]) {
+    const loc = monster.location;
+    if (!monsterLocations.value[loc]) {
+      monsterLocations.value[loc] = [];
+    }
+    monsterLocations.value[loc].push(monster);
+  }
+});
 </script>
 
+
 <template>
-  <article class="bg-green-100 border border-green-300 p-4 rounded-xl shadow-md w-full max-w-sm text-center">
-    <h2 class="text-2xl font-bold text-green-800 mb-2">{{ monster?.name }}</h2>
-    <div class="text-sm text-gray-700 mb-2">Level: {{ monster?.level }}</div>
-
-    <div class="bg-white rounded-lg shadow-inner overflow-hidden h-4 mb-3">
-      <div class="bg-green-500 h-full"
-        :style="{ width: `${(monster!.baseStats.health / monster!.baseStats.maxHealth) * 100}%` }">
-      </div>
+  <section class="p-6">
+    <div v-for="(monsters, location) in monsterLocations" :key="location" class="mb-6">
+      <h2 class="text-2xl font-semibold mb-2">{{ location }}</h2>
+      <ul class="pl-4 border-l-2 border-indigo-400 space-y-1">
+        <li v-for="monster in monsters" :key="monster.id" class="hover:text-indigo-600 cursor-pointer"
+          @click="addMonster(monster.id)">
+          {{ monster.name }} (Lvl {{ monster.level }}, HP: {{ monster.baseStats.health }})
+        </li>
+      </ul>
     </div>
-    <div class="text-xs text-gray-600 mb-4">
-      HP: {{ monster?.baseStats.health }} / {{ monster?.baseStats.maxHealth }}
-    </div>
-
-    <div class="text-xs text-gray-600">XP Reward: {{ monster?.xp }}</div>
-  </article>
+  </section>
 </template>

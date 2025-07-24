@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HeroSection from '@/components/HeroSection.vue';
-import MonsterSection from '@/components/MonsterSection.vue';
+import MonsterSection from '@/components/MonsterBattle.vue';
 import { useUserStore } from '@/stores/User';
 import { ref } from 'vue';
 
@@ -99,10 +99,7 @@ async function userVitalityRestore() {
     }
   }, selectedclass.baseStats.healthRegenInterval);
 }
-
 </script>
-
-
 
 <template>
   <h1 class="text-3xl font-bold p-4">
