@@ -21,7 +21,6 @@ const userStore = useUserStore();
     <div class="text-xs text-gray-600 mb-4">
       HP: {{ monster?.baseStats.health }} / {{ monster?.baseStats.maxHealth }}
     </div>
-
     <div class="text-xs text-gray-600">XP Reward: {{ monster?.xp }}</div>
   </article>
 </template>

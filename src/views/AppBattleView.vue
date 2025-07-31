@@ -18,7 +18,7 @@ function getRandomInt(min: number, max: number) {
 function winBattleFinishedModal(monster: Monster) {
   console.log('Show modal for battle start');
   (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
-  selectedclass.baseStats.xp += monster.xp;
+  userStore.gainXP(monster.xp);
 }
 
 async function startBattle() {

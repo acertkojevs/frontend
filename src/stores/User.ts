@@ -243,9 +243,24 @@ export const useUserStore = defineStore('user', () => {
     userData.value.selectedMonster = null;
   }
 
+  function gainXP(xp: number) {
+    const selectedClass = userData.value.classes[userData.value.selectedClass];
+    selectedClass.baseStats.xp += xp;
+
+    if (selectedClass.baseStats.xp >= selectedClass.baseStats.xpToNextLevel) {
+      const baseXP = 25;
+      const exponent = 1.2;
+      selectedClass.baseStats.level++;
+      selectedClass.baseStats.xp -= selectedClass.baseStats.xpToNextLevel;
+      selectedClass.baseStats.xpToNextLevel = Math.floor(baseXP * Math.pow(selectedClass.baseStats.level, exponent)); // Increase the XP needed for the next level
+      selectedClass.baseStats.unspentSkillPoints++;
+    }
+
+  }
+
   watch(userData,(newValue) => {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, addMonster, loadUser, setMonster, clearMonster}
+  return {userData, addMonster, loadUser, setMonster, clearMonster, gainXP}
 })
