@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
+import monstersData from '@/../data/monsters.json';
 
 //skills data
 type SkillType = 'damage' | 'heal' | 'buff' | 'debuff';
@@ -230,6 +231,14 @@ export const useUserStore = defineStore('user', () => {
     userData.value.selectedMonster = monster;
   }
 
+  function getFreshMonster(id: number): Monster {
+    return JSON.parse(JSON.stringify(monstersData[id]));
+  }
+
+  function addMonster(monster: number) {
+    setMonster(getFreshMonster(monster));
+  }
+
   function clearMonster() {
     userData.value.selectedMonster = null;
   }
@@ -238,5 +247,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, loadUser, setMonster, clearMonster}
+  return {userData, addMonster, loadUser, setMonster, clearMonster}
 })

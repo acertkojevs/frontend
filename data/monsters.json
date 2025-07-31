@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 0,
     "name": "Slime",
     "level": 1,
     "xp": 5,
@@ -11,7 +11,7 @@
     }
   },
   {
-    "id": 2,
+    "id": 1,
     "name": "Knight",
     "level": 3,
     "xp": 15,
@@ -22,7 +22,7 @@
     }
   },
   {
-    "id": 3,
+    "id": 2,
     "name": "Red Golem",
     "level": 5,
     "xp": 40,

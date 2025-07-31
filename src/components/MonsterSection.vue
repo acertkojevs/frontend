@@ -7,11 +7,10 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUserStore();
 const router = useRouter();
-
 const monsterLocations = ref<Record<string, Monster[]>>({});
 
-function addMonster(monster: number) {
-  userStore.setMonster(monstersData[monster]);
+function addMonster(monsterID: number) {
+  userStore.addMonster(monsterID); // Use the first monster as a placeholder
   router.push({ name: 'battle' });
 }
 
