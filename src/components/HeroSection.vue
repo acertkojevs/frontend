@@ -22,7 +22,7 @@ const selectedclass = computed(() => {
       Level {{ selectedclass.baseStats.level }} / {{ selectedclass.baseStats.maxLevel }}<br>
       XP: {{ selectedclass.baseStats.xp }} / {{ selectedclass.baseStats.xpToNextLevel }}<br>
       Unspent Skill Points: <span class="font-semibold text-yellow-500">{{ selectedclass.baseStats.unspentSkillPoints
-      }}</span>
+        }}</span>
     </div>
 
     <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-200 text-sm">
@@ -41,12 +41,12 @@ const selectedclass = computed(() => {
     <div class="border-t border-gray-300 dark:border-gray-700 pt-4">
       <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Stats</h2>
       <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-700 dark:text-gray-200">
-        <li><strong>Vitality:</strong> {{ selectedclass.baseStats.vitality }}</li>
-        <li><strong>Endurance:</strong> {{ selectedclass.baseStats.endurance }}</li>
-        <li><strong>Power:</strong> {{ selectedclass.baseStats.power }}</li>
-        <li><strong>Dodge:</strong> {{ selectedclass.baseStats.dodge }}</li>
-        <li><strong>Resilience:</strong> {{ selectedclass.baseStats.resilience }}</li>
-        <li><strong>Luck:</strong> {{ selectedclass.baseStats.luck }}</li>
+        <li v-for="(value, name) in selectedclass.baseStats.attributes" :key="value">
+          <strong>{{ name }}:</strong> {{ selectedclass.baseStats.attributes[name] }}
+          <button v-if="selectedclass.baseStats.unspentSkillPoints > 0" @click="userStore.levelUpStat(name)">
+            Level up
+          </button>
+        </li>
       </ul>
     </div>
   </article>

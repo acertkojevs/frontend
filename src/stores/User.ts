@@ -33,6 +33,15 @@ export type Monster = {
   skills?: Skill[];
 };
 
+type classAttributes = {
+  vitality: number;
+  endurance: number;
+  power: number;
+  dodge: number;
+  resilience: number;
+  luck: number;
+};
+
 type ClassStats = {
   level: number;
   maxLevel: number;
@@ -47,12 +56,7 @@ type ClassStats = {
   maxStamina: number;
   staminaRecover: number;
   staminaRecoverInterval: number;
-  vitality: number;
-  endurance: number;
-  power: number;
-  dodge: number;
-  resilience: number;
-  luck: number;
+  attributes: classAttributes;
   skills?: Skill[];
 };
 
@@ -79,7 +83,7 @@ const userData = ref<ClassData>({
         level: 1,
         maxLevel: 100,
         xp: 0,
-        xpToNextLevel: 100,
+        xpToNextLevel: 25,
         unspentSkillPoints: 0,
         health: 1,
         maxHealth: 100,
@@ -89,12 +93,14 @@ const userData = ref<ClassData>({
         maxStamina: 100,
         staminaRecover: 20,
         staminaRecoverInterval: 1000,
-        vitality: 0,
-        endurance: 0,
-        power: 0,
-        dodge: 0,
-        resilience: 0,
-        luck: 0,
+        attributes: {
+          vitality: 0,
+          endurance: 0,
+          power: 0,
+          dodge: 0,
+          resilience: 0,
+          luck: 0,
+        },
         skills: [
           {
             name: "Slash",
@@ -123,7 +129,7 @@ const userData = ref<ClassData>({
         level: 1,
         maxLevel: 100,
         xp: 0,
-        xpToNextLevel: 100,
+        xpToNextLevel: 25,
         unspentSkillPoints: 0,
         health: 1,
         maxHealth: 100,
@@ -133,12 +139,14 @@ const userData = ref<ClassData>({
         maxStamina: 100,
         staminaRecover: 20,
         staminaRecoverInterval: 1000,
-        vitality: 0,
-        endurance: 0,
-        power: 0,
-        dodge: 0,
-        resilience: 0,
-        luck: 0,
+        attributes: {
+          vitality: 0,
+          endurance: 0,
+          power: 0,
+          dodge: 0,
+          resilience: 0,
+          luck: 0,
+        },
         skills: [
           {
             name: "Slash",
@@ -167,7 +175,7 @@ const userData = ref<ClassData>({
         level: 1,
         maxLevel: 100,
         xp: 0,
-        xpToNextLevel: 100,
+        xpToNextLevel: 25,
         unspentSkillPoints: 0,
         health: 1,
         maxHealth: 100,
@@ -177,12 +185,14 @@ const userData = ref<ClassData>({
         maxStamina: 100,
         staminaRecover: 20,
         staminaRecoverInterval: 1000,
-        vitality: 0,
-        endurance: 0,
-        power: 0,
-        dodge: 0,
-        resilience: 0,
-        luck: 0,
+        attributes: {
+          vitality: 0,
+          endurance: 0,
+          power: 0,
+          dodge: 0,
+          resilience: 0,
+          luck: 0,
+        },
         skills: [
           {
             name: "Slash",
@@ -245,7 +255,10 @@ export const useUserStore = defineStore('user', () => {
 
   function gainXP(xp: number) {
     const selectedClass = userData.value.classes[userData.value.selectedClass];
-    selectedClass.baseStats.xp += xp;
+
+    if (selectedClass.baseStats.level <= selectedClass.baseStats.maxLevel) {
+      selectedClass.baseStats.xp += xp;
+    }
 
     if (selectedClass.baseStats.xp >= selectedClass.baseStats.xpToNextLevel) {
       const baseXP = 25;
@@ -258,9 +271,17 @@ export const useUserStore = defineStore('user', () => {
 
   }
 
+  function levelUpStat(stat: keyof classAttributes) {
+    const selectedClass = userData.value.classes[userData.value.selectedClass];
+    if (selectedClass.baseStats.unspentSkillPoints > 0) {
+      selectedClass.baseStats.attributes[stat] += 1;
+      selectedClass.baseStats.unspentSkillPoints -= 1;
+    }
+  }
+
   watch(userData,(newValue) => {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, addMonster, loadUser, setMonster, clearMonster, gainXP}
+  return {userData, addMonster, loadUser, setMonster, clearMonster, gainXP, levelUpStat}
 })
