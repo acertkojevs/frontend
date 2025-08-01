@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import monstersData from '@/../data/monsters.json';
 import { computed } from 'vue';
 
+
 const userStore = useUserStore();
 const selectedclass = userStore.userData.classes[userStore.userData.selectedClass];
 const monster = computed(() => userStore.userData.selectedMonster);
@@ -117,9 +118,11 @@ function rebattle() {
   console.log(monstersData)
   console.log('Rebattle initiated');
   console.log(monster)
-  userStore.addMonster(0);
-  battleOver.value = false;
-  startBattle();
+  if (typeof monster.value?.id === 'number') {
+    userStore.addMonster(monster.value?.id);
+    battleOver.value = false;
+    startBattle();
+  }
 }
 </script>
 
