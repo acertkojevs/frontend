@@ -260,15 +260,17 @@ export const useUserStore = defineStore('user', () => {
       selectedClass.baseStats.xp += xp;
     }
 
-    if (selectedClass.baseStats.xp >= selectedClass.baseStats.xpToNextLevel) {
+    if (selectedClass.baseStats.xp >= selectedClass.baseStats.xpToNextLevel) { //level up
       const baseXP = 25;
       const exponent = 1.2;
       selectedClass.baseStats.level++;
+      selectedClass.baseStats.maxHealth += 10; // Increase max health on level up
+      selectedClass.baseStats.health = selectedClass.baseStats.maxHealth; // Restore health on level up
+      selectedClass.baseStats.stamina += 2; // Increase max stamina on level up
       selectedClass.baseStats.xp -= selectedClass.baseStats.xpToNextLevel;
       selectedClass.baseStats.xpToNextLevel = Math.floor(baseXP * Math.pow(selectedClass.baseStats.level, exponent)); // Increase the XP needed for the next level
       selectedClass.baseStats.unspentSkillPoints++;
     }
-
   }
 
   function levelUpStat(stat: keyof classAttributes) {
