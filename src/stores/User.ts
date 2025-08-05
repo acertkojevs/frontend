@@ -116,6 +116,8 @@ export const useUserStore = defineStore('user', () => {
   const inBattle = ref(userData.value.inBattle);
   const battleResult = ref('');
 
+
+
   function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -163,69 +165,59 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userVitalityRestore() {
-    const interval = setInterval(() => {
-      if (selectedClass.value.baseStats.health + selectedClass.value.baseStats.healthRegen >= selectedClass.value.baseStats.maxHealth) {
-        selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;
-      }
-      else {
-        selectedClass.value.baseStats.health += selectedClass.value.baseStats.healthRegen;
-      }
-    }, selectedClass.value.baseStats.healthRegenInterval);
+    if (!inBattle.value) return;
+
+    if (selectedClass.value.baseStats.health + selectedClass.value.baseStats.healthRegen >= selectedClass.value.baseStats.maxHealth) {
+      selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;
+    } else {
+      selectedClass.value.baseStats.health += selectedClass.value.baseStats.healthRegen;
+    }
+    console.log("Vitality restored to", selectedClass.value.baseStats.health);
+
+    setTimeout(userVitalityRestore, selectedClass.value.baseStats.healthRegenInterval);
   }
 
   async function userSkills() {
-    selectedClass.value.baseStats.skills?.forEach(skill => {
+  if (!selectedClass.value.baseStats.skills) return;
 
-      if(skill.enabled)
-      {
-        switch (skill.type) {
-          case 'damage': // damage spell
-            const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
-            castDamageSkill(skill);
-            break;
-        }
-      }
-    });
+  for (const skill of selectedClass.value.baseStats.skills) {
+    if (skill.enabled && skill.type === 'damage') {
+      // Start casting *after* cooldown delay for the first hit
+      setTimeout(() => castDamageSkill(skill), skill.cooldown);
+    }
+  }
+}
+
+async function castDamageSkill(skill: DamageSkill) {
+  if (!inBattle.value || !selectedMonster.value || selectedMonster.value.baseStats.health <= 0) return;
+
+  console.log(`Damage skill casted: ${skill.name}`);
+
+  const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
+  selectedMonster.value.baseStats.health -= dmg;
+
+  if (selectedMonster.value.baseStats.health < 0) {
+    selectedMonster.value.baseStats.health = 0;
   }
 
-  async function castDamageSkill(skill: DamageSkill) {
-    const interval = setInterval(() => {
+  console.log(`${skill.name} hit for ${dmg}, monster HP: ${selectedMonster.value.baseStats.health}`);
 
-      if (!inBattle.value) {
-        clearInterval(interval);
-        return;
-      }
-
-      if (selectedClass.value.baseStats.health <= 0) {
-        clearInterval(interval);
-        inBattle.value = false;
-        return;
-      }
-
-      if(selectedMonster.value){
-        if (selectedMonster.value.baseStats.health <= 0) {
-          clearInterval(interval);
-          inBattle.value = false;
-          return;
-        }
-      }
-
-      const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
-      if (selectedMonster.value){
-        selectedMonster.value.baseStats.health -= dmg;
-        if (selectedMonster.value.baseStats.health <= 0) { // If monster's health is 0 or less, set it to 0
-          selectedMonster.value.baseStats.health = 0;
-          winBattleFinishedModal(selectedMonster.value);
-        }
-        console.log(`${skill.name} hit for ${dmg}, monster HP: ${selectedMonster.value.baseStats.health}`);
-      }
-    }, skill.cooldown);
+  if (selectedMonster.value.baseStats.health === 0) {
+    winBattleFinishedModal(selectedMonster.value);
+    inBattle.value = false;
+    return;
   }
+
+  setTimeout(() => castDamageSkill(skill), skill.cooldown);
+}
+
+
 
   function winBattleFinishedModal(monster: GameMonster) {
-    console.log('Show modal for battle start');
+    console.log('Show modal for battle end');
     (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
     gainXP(monster.xp);
+    inBattle.value = false; // Set inBattle to false when the battle is won
   }
 
   watch(userData,(newValue) => {

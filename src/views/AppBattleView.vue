@@ -11,10 +11,6 @@ import { useMonsterStore } from '@/stores/Monster';
 const userStore = useUserStore();
 const monsterStore = useMonsterStore();
 
-
-
-
-
 async function startBattle() {
   // const monster = userStore.userData.selectedMonster;
   console.log('Starting battle with class:', userStore.selectedClass);
@@ -24,20 +20,19 @@ async function startBattle() {
 
   userStore.userSkills(); //cast user skills
   userStore.userVitalityRestore(); //restores user vitality calculation
-  monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
+  // monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
 }
 
 
-// function rebattle() {
-//   console.log(monstersData)
-//   console.log('Rebattle initiated');
-//   console.log(userStore.selectedMonster)
-//   if (typeof userStore.selectedMonster?.id === 'number') {
-//     monsterStore.addMonster(userStore.selectedMonster.id);
-//     battleOver.value = false;
-//     startBattle();
-//   }
-// }
+function rebattle() {
+  console.log('Rebattle initiated');
+  console.log(userStore.selectedMonster)
+  if (typeof userStore.selectedMonster?.id === 'number') {
+    monsterStore.addMonster(userStore.selectedMonster.id);
+    // userStore.inBattle = false;
+    startBattle();
+  }
+}
 </script>
 
 <template>
@@ -57,7 +52,7 @@ async function startBattle() {
       <p class="py-4">You gained {{ userStore.selectedMonster?.xp }} xp!</p>
       <div class="modal-action">
         <form method="dialog">
-          <!-- <button class="btn" @click="rebattle">Fight Again</button> -->
+          <button class="btn" @click="rebattle">Fight Again</button>
           <button class="btn">Close</button>
         </form>
       </div>
