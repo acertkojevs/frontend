@@ -1,6 +1,9 @@
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { ClassData, ClassAttributes } from '@/types/UserType';
+import type { DamageSkill } from '@/types/SkillType';
+import { useMonsterStore } from './Monster';
+import type { GameMonster } from '@/types/MonsterType';
 
 const userData = ref<ClassData>({
   selectedClass: -1,
@@ -81,7 +84,22 @@ const userData = ref<ClassData>({
           luck: 0,
         },
         skills: [
-
+          {
+            name: "Power Slash",
+            type: "damage",
+            cooldown: 2000,
+            enabled: true,
+            minDamage: 10,
+            maxDamage: 20
+          },
+          {
+            name: "Fireball",
+            type: "damage",
+            cooldown: 5000,
+            enabled: true,
+            minDamage: 15,
+            maxDamage: 30
+          },
         ]
       }
     }
@@ -91,6 +109,16 @@ const userData = ref<ClassData>({
 
 
 export const useUserStore = defineStore('user', () => {
+
+  // const selectedclass = userData.classes[userData.selectedClass];
+  const selectedClass = computed(() => userData.value.classes[userData.value.selectedClass]);
+  const selectedMonster = computed(() => userData.value.selectedMonster);
+  const inBattle = ref(userData.value.inBattle);
+  const battleResult = ref('');
+
+  function getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   function saveUser() {
     localStorage.setItem("data", JSON.stringify(userData.value));
@@ -134,9 +162,75 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function userVitalityRestore() {
+    const interval = setInterval(() => {
+      if (selectedClass.value.baseStats.health + selectedClass.value.baseStats.healthRegen >= selectedClass.value.baseStats.maxHealth) {
+        selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;
+      }
+      else {
+        selectedClass.value.baseStats.health += selectedClass.value.baseStats.healthRegen;
+      }
+    }, selectedClass.value.baseStats.healthRegenInterval);
+  }
+
+  async function userSkills() {
+    selectedClass.value.baseStats.skills?.forEach(skill => {
+
+      if(skill.enabled)
+      {
+        switch (skill.type) {
+          case 'damage': // damage spell
+            const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
+            castDamageSkill(skill);
+            break;
+        }
+      }
+    });
+  }
+
+  async function castDamageSkill(skill: DamageSkill) {
+    const interval = setInterval(() => {
+
+      if (!inBattle.value) {
+        clearInterval(interval);
+        return;
+      }
+
+      if (selectedClass.value.baseStats.health <= 0) {
+        clearInterval(interval);
+        inBattle.value = false;
+        return;
+      }
+
+      if(selectedMonster.value){
+        if (selectedMonster.value.baseStats.health <= 0) {
+          clearInterval(interval);
+          inBattle.value = false;
+          return;
+        }
+      }
+
+      const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
+      if (selectedMonster.value){
+        selectedMonster.value.baseStats.health -= dmg;
+        if (selectedMonster.value.baseStats.health <= 0) { // If monster's health is 0 or less, set it to 0
+          selectedMonster.value.baseStats.health = 0;
+          winBattleFinishedModal(selectedMonster.value);
+        }
+        console.log(`${skill.name} hit for ${dmg}, monster HP: ${selectedMonster.value.baseStats.health}`);
+      }
+    }, skill.cooldown);
+  }
+
+  function winBattleFinishedModal(monster: GameMonster) {
+    console.log('Show modal for battle start');
+    (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
+    gainXP(monster.xp);
+  }
+
   watch(userData,(newValue) => {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, loadUser, gainXP, levelUpStat}
+  return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, inBattle, battleResult, saveUser, getRandomInt}
 })
