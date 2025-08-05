@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import HeroSection from '@/components/HeroSection.vue';
 import MonsterSection from '@/components/MonsterBattle.vue';
-import { useUserStore, type Monster } from '@/stores/User';
+import { useUserStore } from '@/stores/User';
 import { ref } from 'vue';
 import monstersData from '@/../data/monsters.json';
 import { computed } from 'vue';
+import type { GameMonster } from '@/types/MonsterType';
+import { useMonsterStore } from '@/stores/Monster';
 
 
 const userStore = useUserStore();
+const monsterStore = useMonsterStore();
 const selectedclass = userStore.userData.classes[userStore.userData.selectedClass];
 const monster = computed(() => userStore.userData.selectedMonster);
 const battleOver = ref(userStore.userData.inBattle);
@@ -16,7 +19,7 @@ function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function winBattleFinishedModal(monster: Monster) {
+function winBattleFinishedModal(monster: GameMonster) {
   console.log('Show modal for battle start');
   (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
   userStore.gainXP(monster.xp);
@@ -28,8 +31,8 @@ async function startBattle() {
   console.log('Starting battle with monster:', monster);
 
   userSkills(); //cast user skills
-  userStaminaRestore(); //restores user stamina calculation
   userVitalityRestore(); //restores user vitality calculation
+  monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
 }
 
 async function userSkills() {
@@ -71,15 +74,6 @@ async function castSpell(skill: any) {
       return;
     }
 
-    // Check stamina
-    if (selectedclass.baseStats.stamina > skill.staminaCost) {
-      selectedclass.baseStats.stamina -= skill.staminaCost;
-    }
-    else {
-      console.log('Not enough stamina for skill:', skill.name);
-      return;
-    }
-
     const dmg = getRandomInt(skill.minDamage, skill.maxDamage);
     if (monster.value) {
       monster.value.baseStats.health -= dmg;
@@ -89,18 +83,6 @@ async function castSpell(skill: any) {
     if (monster.value)
       console.log(`${skill.name} hit for ${dmg}, monster HP: ${monster?.value.baseStats.health}`);
   }, skill.cooldown);
-}
-
-async function userStaminaRestore() {
-  const interval = setInterval(() => {
-    if ((selectedclass.baseStats.stamina + selectedclass.baseStats.staminaRecover) >= selectedclass.baseStats.maxStamina && battleOver.value === true) {
-      selectedclass.baseStats.stamina = selectedclass.baseStats.maxStamina;
-
-    }
-    else {
-      selectedclass.baseStats.stamina += selectedclass.baseStats.staminaRecover;
-    }
-  }, selectedclass.baseStats.staminaRecoverInterval);
 }
 
 async function userVitalityRestore() {
@@ -119,7 +101,7 @@ function rebattle() {
   console.log('Rebattle initiated');
   console.log(monster)
   if (typeof monster.value?.id === 'number') {
-    userStore.addMonster(monster.value?.id);
+    monsterStore.addMonster(monster.value?.id);
     battleOver.value = false;
     startBattle();
   }

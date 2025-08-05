@@ -22,7 +22,7 @@ const selectedclass = computed(() => {
       Level {{ selectedclass.baseStats.level }} / {{ selectedclass.baseStats.maxLevel }}<br>
       XP: {{ selectedclass.baseStats.xp }} / {{ selectedclass.baseStats.xpToNextLevel }}<br>
       Unspent Skill Points: <span class="font-semibold text-yellow-500">{{ selectedclass.baseStats.unspentSkillPoints
-        }}</span>
+      }}</span>
     </div>
 
     <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-200 text-sm">
@@ -30,11 +30,6 @@ const selectedclass = computed(() => {
         <strong>HP:</strong> {{ selectedclass.baseStats.maxHealth }}<br>
         <strong>Regen:</strong> {{ selectedclass.baseStats.healthRegen }} / {{
           selectedclass.baseStats.healthRegenInterval / 1000 }}s
-      </div>
-      <div>
-        <strong>Stamina:</strong> {{ selectedclass.baseStats.maxStamina }}<br>
-        <strong>Regen:</strong> {{ selectedclass.baseStats.staminaRecover }} / {{
-          selectedclass.baseStats.staminaRecoverInterval / 1000 }}s
       </div>
     </div>
 

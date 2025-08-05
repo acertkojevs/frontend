@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import monstersData from '@/../data/monsters.json';
-import type { Monster } from '@/stores/User';
-import { useUserStore } from '@/stores/User';
+import type { GameMonster } from '@/types/MonsterType';
+import { useMonsterStore } from '@/stores/Monster';
 import { useRouter } from 'vue-router'
 
-const userStore = useUserStore();
+const monsterStore = useMonsterStore();
 const router = useRouter();
-const monsterLocations = ref<Record<string, Monster[]>>({});
+const monsterLocations = ref<Record<string, GameMonster[]>>({});
 
-function addMonster(monsterID: number) {
-  userStore.addMonster(monsterID); // Use the first monster as a placeholder
+function setMonsterInStorage(monsterID: number) {
+  // monsterStore.addMonster(monsterID); // Use the first monster as a placeholder
+  monsterStore.addMonster(monsterID); // Set the first monster as a placeholder
   router.push({ name: 'battle' });
+  // console.log("test", monsterID);
 }
 
 onMounted(() => {
   // Group monsters by location
-  for (const monster of monstersData as Monster[]) {
+  for (const monster of monstersData as GameMonster[]) {
     const loc = monster.location;
     if (!monsterLocations.value[loc]) {
       monsterLocations.value[loc] = [];
@@ -33,7 +35,7 @@ onMounted(() => {
       <h2 class="text-2xl font-semibold mb-2">{{ location }}</h2>
       <ul class="pl-4 border-l-2 border-indigo-400 space-y-1">
         <li v-for="monster in monsters" :key="monster.id" class="hover:text-indigo-600 cursor-pointer"
-          @click="addMonster(monster.id)">
+          @click="setMonsterInStorage(monster.id)">
           {{ monster.name }} (Lvl {{ monster.level }}, HP: {{ monster.baseStats.health }})
         </li>
       </ul>

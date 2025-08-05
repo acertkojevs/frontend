@@ -21,6 +21,10 @@ const userStore = useUserStore();
     <div class="text-xs text-gray-600 mb-4">
       HP: {{ monster?.baseStats.health }} / {{ monster?.baseStats.maxHealth }}
     </div>
+    <!-- <div v-for="skill in monster?.skills" class="text-xs text-gray-600 mb-1">
+      <strong>{{ skill.name }}:</strong> {{ skill.minDamage }} - {{ skill.maxDamage }} damage, Cooldown: {{
+        skill.cooldown / 1000 }}s
+    </div> -->
     <div class="text-xs text-gray-600">XP Reward: {{ monster?.xp }}</div>
   </article>
 </template>

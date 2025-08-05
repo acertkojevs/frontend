@@ -7,8 +7,20 @@
     "location": "Forest",
     "baseStats": {
       "health": 30,
-      "maxHealth": 30
-    }
+      "maxHealth": 30,
+      "healthRegenInterval": 1000
+    },
+    "skills": [
+     {
+            "name": "Slash",
+            "type": "damage",
+            "cooldown": 1000,
+            "staminaCost": 10,
+            "minDamage": 1,
+            "maxDamage": 3,
+            "enabled": true
+      }
+    ]
   },
   {
     "id": 1,
