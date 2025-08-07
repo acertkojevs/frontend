@@ -111,7 +111,10 @@ const userData = ref<ClassData>({
 export const useUserStore = defineStore('user', () => {
 
   // const selectedclass = userData.classes[userData.selectedClass];
-  const selectedClass = computed(() => userData.value.classes[userData.value.selectedClass]);
+  const selectedClass = computed(() => {
+    const index = userData.value.selectedClass;
+    return index >= 0 ? userData.value.classes[index] : null;
+  });
   const selectedMonster = computed(() => userData.value.selectedMonster);
   // const inBattle = ref(userData.value.inBattle);
   const battleResult = ref('');
@@ -165,7 +168,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userVitalityRestore() {
-    if (!userData.value.inBattle) return;
+    if (!selectedClass.value || !userData.value.inBattle) return;
 
     if (selectedClass.value.baseStats.health + selectedClass.value.baseStats.healthRegen >= selectedClass.value.baseStats.maxHealth) {
       selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;
@@ -178,15 +181,15 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userSkills() {
-  if (!selectedClass.value.baseStats.skills) return;
+    if (!selectedClass.value || !selectedClass.value.baseStats.skills) return;
 
-  for (const skill of selectedClass.value.baseStats.skills) {
-    if (skill.enabled && skill.type === 'damage') {
-      // Start casting *after* cooldown delay for the first hit
-      setTimeout(() => castDamageSkill(skill), skill.cooldown);
+    for (const skill of selectedClass.value.baseStats.skills) {
+      if (skill.enabled && skill.type === 'damage') {
+        // Start casting *after* cooldown delay for the first hit
+        setTimeout(() => castDamageSkill(skill), skill.cooldown);
+      }
     }
   }
-}
 
 async function castDamageSkill(skill: DamageSkill) {
   if (!userData.value.inBattle || !selectedMonster.value || selectedMonster.value.baseStats.health <= 0) return;

@@ -2,9 +2,8 @@
 import { useUserStore } from '@/stores/User';
 import { computed } from 'vue';
 
-const monster = computed(() => userStore.userData.selectedMonster);
 const userStore = useUserStore();
-
+const monster = computed(() => userStore.userData.selectedMonster);
 
 </script>
 

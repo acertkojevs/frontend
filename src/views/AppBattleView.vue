@@ -21,6 +21,7 @@ async function startBattle() {
   userStore.userSkills(); //cast user skills
   userStore.userVitalityRestore(); //restores user vitality calculation
   monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
+  monsterStore.monsterSkills(); //cast monster skills
 }
 
 

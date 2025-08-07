@@ -2,19 +2,19 @@ import { defineStore } from 'pinia'
 import monstersData from '@/../data/monsters.json';
 import type { GameMonster } from '@/types/MonsterType';
 import { useUserStore } from './User';
+import type { DamageSkill } from '@/types/SkillType';
 
 export const useMonsterStore = defineStore('monster', () => {
+  const userStore = useUserStore();
   const userData = useUserStore().userData;
-  // const inBattle = userData.inBattle;
+
 
   async function monsterVitalityRestore() {
-    console.log(userData.inBattle)
 
     if (!userData.inBattle){
       console.log("Not in battle, monster vitality restore skipped.");
       return;
     }
-
 
     if (!userData.selectedMonster) return;
       if (userData.selectedMonster.baseStats.health + userData.selectedMonster.baseStats.healthRegen >= userData.selectedMonster.baseStats.maxHealth) {
@@ -25,6 +25,40 @@ export const useMonsterStore = defineStore('monster', () => {
     console.log("Monster Vitality restored to", userData.selectedMonster.baseStats.health);
 
     setTimeout(monsterVitalityRestore, userData.selectedMonster.baseStats.healthRegenInterval);
+  }
+
+  async function monsterSkills() {
+    if (!userData.selectedMonster?.skills) return;
+
+    for (const skill of userData.selectedMonster?.skills) {
+      if (skill.enabled && skill.type === 'damage') {
+        // Start casting *after* cooldown delay for the first hit
+        setTimeout(() => castDamageSkill(skill), skill.cooldown);
+      }
+    }
+  }
+
+  async function castDamageSkill(skill: DamageSkill) {
+    if (!userData.inBattle || !userData.selectedMonster || userData.selectedMonster.baseStats.health <= 0) return;
+
+    console.log(`Damage skill casted: ${skill.name}`);
+
+    const dmg = userStore.getRandomInt(skill.minDamage, skill.maxDamage);
+    userStore.selectedClass.baseStats.health -= dmg;
+
+    if ( userStore.selectedClass.baseStats.health < 0) { //fallback to 0 if health goes below 0
+       userStore.selectedClass.baseStats.health = 0;
+    }
+
+    console.log(`Monster: ${skill.name} hit for ${dmg}, monster HP: ${ userStore.selectedClass.baseStats.health}`);
+
+    if (userStore.selectedClass.baseStats.health === 0) {
+      // winBattleFinishedModal(selectedMonster.value);
+      userData.inBattle = false;
+      return;
+    }
+
+    setTimeout(() => castDamageSkill(skill), skill.cooldown);
   }
 
   function setMonster(monster: GameMonster) {
@@ -43,5 +77,5 @@ export const useMonsterStore = defineStore('monster', () => {
     userData.selectedMonster = null;
   }
 
-  return {monsterVitalityRestore,addMonster, setMonster, clearMonster}
+  return {monsterVitalityRestore,addMonster, setMonster, clearMonster, monsterSkills}
 })

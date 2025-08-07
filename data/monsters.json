@@ -34,7 +34,18 @@
       "maxHealth": 100,
       "healthRegenInterval": 1000,
       "healthRegen": 1
-    }
+    },
+    "skills": [
+      {
+        "name": "Smash",
+        "type": "damage",
+        "cooldown": 2000,
+        "staminaCost": 20,
+        "minDamage": 10,
+        "maxDamage": 15,
+        "enabled": true
+      }
+    ]
   },
   {
     "id": 2,
@@ -47,6 +58,17 @@
       "maxHealth": 200,
       "healthRegenInterval": 1000,
       "healthRegen": 1
-    }
+    },
+    "skills": [
+      {
+        "name": "Smash",
+        "type": "damage",
+        "cooldown": 2000,
+        "staminaCost": 20,
+        "minDamage": 10,
+        "maxDamage": 15,
+        "enabled": true
+      }
+    ]
   }
 ]
