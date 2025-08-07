@@ -4,6 +4,7 @@ interface MonsterStats {
   health: number;
   maxHealth: number;
   healthRegenInterval: number;
+  healthRegen: number;
 }
 
 export interface GameMonster {

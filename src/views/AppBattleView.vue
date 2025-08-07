@@ -16,11 +16,11 @@ async function startBattle() {
   console.log('Starting battle with class:', userStore.selectedClass);
   console.log('Starting battle with monster:', userStore.selectedMonster);
 
-  userStore.inBattle = true; // Set battle status to true
-
+  userStore.userData.inBattle = true; // Set battle status to true
+  // console.log(userStore.inBattle);
   userStore.userSkills(); //cast user skills
   userStore.userVitalityRestore(); //restores user vitality calculation
-  // monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
+  monsterStore.monsterVitalityRestore(); //restores monster vitality calculation
 }
 
 

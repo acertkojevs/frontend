@@ -8,7 +8,8 @@
     "baseStats": {
       "health": 30,
       "maxHealth": 30,
-      "healthRegenInterval": 1000
+      "healthRegenInterval": 1000,
+      "healthRegen": 1
     },
     "skills": [
      {
@@ -30,7 +31,9 @@
     "location": "Castle",
     "baseStats": {
       "health": 100,
-      "maxHealth": 100
+      "maxHealth": 100,
+      "healthRegenInterval": 1000,
+      "healthRegen": 1
     }
   },
   {
@@ -41,7 +44,9 @@
     "location": "Castle",
     "baseStats": {
       "health": 200,
-      "maxHealth": 200
+      "maxHealth": 200,
+      "healthRegenInterval": 1000,
+      "healthRegen": 1
     }
   }
 ]

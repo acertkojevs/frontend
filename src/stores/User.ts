@@ -113,7 +113,7 @@ export const useUserStore = defineStore('user', () => {
   // const selectedclass = userData.classes[userData.selectedClass];
   const selectedClass = computed(() => userData.value.classes[userData.value.selectedClass]);
   const selectedMonster = computed(() => userData.value.selectedMonster);
-  const inBattle = ref(userData.value.inBattle);
+  // const inBattle = ref(userData.value.inBattle);
   const battleResult = ref('');
 
 
@@ -165,14 +165,14 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userVitalityRestore() {
-    if (!inBattle.value) return;
+    if (!userData.value.inBattle) return;
 
     if (selectedClass.value.baseStats.health + selectedClass.value.baseStats.healthRegen >= selectedClass.value.baseStats.maxHealth) {
       selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;
     } else {
       selectedClass.value.baseStats.health += selectedClass.value.baseStats.healthRegen;
     }
-    console.log("Vitality restored to", selectedClass.value.baseStats.health);
+    console.log("Hero Vitality restored to", selectedClass.value.baseStats.health);
 
     setTimeout(userVitalityRestore, selectedClass.value.baseStats.healthRegenInterval);
   }
@@ -189,7 +189,7 @@ export const useUserStore = defineStore('user', () => {
 }
 
 async function castDamageSkill(skill: DamageSkill) {
-  if (!inBattle.value || !selectedMonster.value || selectedMonster.value.baseStats.health <= 0) return;
+  if (!userData.value.inBattle || !selectedMonster.value || selectedMonster.value.baseStats.health <= 0) return;
 
   console.log(`Damage skill casted: ${skill.name}`);
 
@@ -204,7 +204,7 @@ async function castDamageSkill(skill: DamageSkill) {
 
   if (selectedMonster.value.baseStats.health === 0) {
     winBattleFinishedModal(selectedMonster.value);
-    inBattle.value = false;
+    userData.value.inBattle = false;
     return;
   }
 
@@ -217,12 +217,12 @@ async function castDamageSkill(skill: DamageSkill) {
     console.log('Show modal for battle end');
     (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
     gainXP(monster.xp);
-    inBattle.value = false; // Set inBattle to false when the battle is won
+    userData.value.inBattle = false; // Set inBattle to false when the battle is won
   }
 
   watch(userData,(newValue) => {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, inBattle, battleResult, saveUser, getRandomInt}
+  return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, battleResult, saveUser, getRandomInt}
 })

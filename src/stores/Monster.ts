@@ -5,17 +5,26 @@ import { useUserStore } from './User';
 
 export const useMonsterStore = defineStore('monster', () => {
   const userData = useUserStore().userData;
+  // const inBattle = userData.inBattle;
 
   async function monsterVitalityRestore() {
-    const interval = setInterval(() => {
-        // if (selectedclass.baseStats.health + selectedclass.baseStats.healthRegen >= selectedclass.baseStats.maxHealth && battleOver.value === true) {
-        //   selectedclass.baseStats.health = selectedclass.baseStats.maxHealth;
-        // }
-        // else {
-        //   selectedclass.baseStats.health += selectedclass.baseStats.healthRegen;
-        // }
-        console.log("Test testestsetse");
-      }, userData.selectedMonster?.baseStats.healthRegenInterval);
+    console.log(userData.inBattle)
+
+    if (!userData.inBattle){
+      console.log("Not in battle, monster vitality restore skipped.");
+      return;
+    }
+
+
+    if (!userData.selectedMonster) return;
+      if (userData.selectedMonster.baseStats.health + userData.selectedMonster.baseStats.healthRegen >= userData.selectedMonster.baseStats.maxHealth) {
+        userData.selectedMonster.baseStats.health = userData.selectedMonster.baseStats.maxHealth;
+      } else {
+        userData.selectedMonster.baseStats.health += userData.selectedMonster.baseStats.healthRegen;
+      }
+    console.log("Monster Vitality restored to", userData.selectedMonster.baseStats.health);
+
+    setTimeout(monsterVitalityRestore, userData.selectedMonster.baseStats.healthRegenInterval);
   }
 
   function setMonster(monster: GameMonster) {
