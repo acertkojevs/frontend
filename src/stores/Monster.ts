@@ -43,19 +43,22 @@ export const useMonsterStore = defineStore('monster', () => {
 
     console.log(`Damage skill casted: ${skill.name}`);
 
-    const dmg = userStore.getRandomInt(skill.minDamage, skill.maxDamage);
-    userStore.selectedClass.baseStats.health -= dmg;
+    if(userStore.selectedClass && userStore.selectedMonster)
+    {
+      const dmg = userStore.getRandomInt(skill.minDamage, skill.maxDamage);
+      userStore.selectedClass.baseStats.health -= dmg;
 
-    if ( userStore.selectedClass.baseStats.health < 0) { //fallback to 0 if health goes below 0
-       userStore.selectedClass.baseStats.health = 0;
-    }
+      if ( userStore.selectedClass.baseStats.health < 0) { //fallback to 0 if health goes below 0
+        userStore.selectedClass.baseStats.health = 0;
+      }
 
-    console.log(`Monster: ${skill.name} hit for ${dmg}, monster HP: ${ userStore.selectedClass.baseStats.health}`);
+      console.log(`Monster: ${skill.name} hit for ${dmg}, hero HP: ${ userStore.selectedClass.baseStats.health}`);
 
-    if (userStore.selectedClass.baseStats.health === 0) {
-      // winBattleFinishedModal(selectedMonster.value);
-      userData.inBattle = false;
-      return;
+      if (userStore.selectedClass.baseStats.health === 0) {
+        userStore.loseBattleFinishedModal(userStore.selectedMonster);
+        userData.inBattle = false;
+        return;
+      }
     }
 
     setTimeout(() => castDamageSkill(skill), skill.cooldown);

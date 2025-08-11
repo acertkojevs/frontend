@@ -2,7 +2,7 @@ import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { ClassData, ClassAttributes } from '@/types/UserType';
 import type { DamageSkill } from '@/types/SkillType';
-import { useMonsterStore } from './Monster';
+// import { useMonsterStore } from './Monster';
 import type { GameMonster } from '@/types/MonsterType';
 
 const userData = ref<ClassData>({
@@ -218,8 +218,15 @@ async function castDamageSkill(skill: DamageSkill) {
 
   function winBattleFinishedModal(monster: GameMonster) {
     console.log('Show modal for battle end');
-    (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
+    (document.getElementById("battleVictory") as HTMLDialogElement)?.showModal();
     gainXP(monster.xp);
+    userData.value.inBattle = false; // Set inBattle to false when the battle is won
+  }
+
+  function loseBattleFinishedModal(monster: GameMonster) {
+    console.log('Show modal for battle end');
+    (document.getElementById("battleDefeat") as HTMLDialogElement)?.showModal();
+    // gainXP(monster.xp);
     userData.value.inBattle = false; // Set inBattle to false when the battle is won
   }
 
@@ -227,5 +234,5 @@ async function castDamageSkill(skill: DamageSkill) {
     localStorage.setItem('data', JSON.stringify(newValue));
   }, { deep: true })
 
-  return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, battleResult, saveUser, getRandomInt}
+  return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, battleResult, saveUser, getRandomInt, loseBattleFinishedModal}
 })

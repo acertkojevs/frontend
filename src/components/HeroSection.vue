@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User.ts'
-import { computed } from 'vue';
 
 const userStore = useUserStore()
 // const selectedclass = userStore.selectedClass;
@@ -20,7 +19,7 @@ const userStore = useUserStore()
       XP: {{ userStore.selectedClass.baseStats.xp }} / {{ userStore.selectedClass.baseStats.xpToNextLevel }}<br>
       Unspent Skill Points: <span class="font-semibold text-yellow-500">{{
         userStore.selectedClass.baseStats.unspentSkillPoints
-        }}</span>
+      }}</span>
     </div>
 
     <div class="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-200 text-sm">

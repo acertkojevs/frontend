@@ -2,9 +2,9 @@
 import HeroSection from '@/components/HeroSection.vue';
 import MonsterSection from '@/components/MonsterBattle.vue';
 import { useUserStore } from '@/stores/User';
-import { ref } from 'vue';
+// import { ref } from 'vue';
 // import monstersData from '@/../data/monsters.json';
-import type { GameMonster } from '@/types/MonsterType';
+// import type { GameMonster } from '@/types/MonsterType';
 import { useMonsterStore } from '@/stores/Monster';
 
 
@@ -47,13 +47,25 @@ function rebattle() {
     <HeroSection />
     <MonsterSection />
   </div>
-  <dialog id="my_modal_1" class="modal">
+  <dialog id="battleVictory" class="modal">
     <div class="modal-box">
       <h3 class="text-lg font-bold">You won</h3>
       <p class="py-4">You gained {{ userStore.selectedMonster?.xp }} xp!</p>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn" @click="rebattle">Fight Again</button>
+          <button class="btn">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+  <dialog id="battleDefeat" class="modal">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">Defeat</h3>
+      <p class="py-4">You lost</p>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- <button class="btn" @click="rebattle">Fight Again</button> -->
           <button class="btn">Close</button>
         </form>
       </div>
