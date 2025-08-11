@@ -208,6 +208,7 @@ async function castDamageSkill(skill: DamageSkill) {
   if (selectedMonster.value.baseStats.health === 0) {
     winBattleFinishedModal(selectedMonster.value);
     userData.value.inBattle = false;
+
     return;
   }
 
@@ -220,6 +221,9 @@ async function castDamageSkill(skill: DamageSkill) {
     console.log('Show modal for battle end');
     (document.getElementById("battleVictory") as HTMLDialogElement)?.showModal();
     gainXP(monster.xp);
+    if (selectedClass.value) {
+      selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;    // Reset hero health
+    }
     userData.value.inBattle = false; // Set inBattle to false when the battle is won
   }
 
@@ -227,6 +231,9 @@ async function castDamageSkill(skill: DamageSkill) {
     console.log('Show modal for battle end');
     (document.getElementById("battleDefeat") as HTMLDialogElement)?.showModal();
     // gainXP(monster.xp);
+    if (selectedClass.value) {
+      selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth;    // Reset hero health
+    }
     userData.value.inBattle = false; // Set inBattle to false when the battle is won
   }
 
