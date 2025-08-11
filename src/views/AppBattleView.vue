@@ -30,10 +30,6 @@ function rebattle() {
   console.log(userStore.selectedMonster)
   if (typeof userStore.selectedMonster?.id === 'number') {
     monsterStore.addMonster(userStore.selectedMonster.id);
-    if (userStore.selectedClass) {
-      userStore.selectedClass.baseStats.health = userStore.selectedClass.baseStats.maxHealth;    // Reset hero health
-    }
-    // userStore.inBattle = false;
     startBattle();
   }
 }
