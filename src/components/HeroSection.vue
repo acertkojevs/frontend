@@ -8,7 +8,7 @@ const userStore = useUserStore()
 
 <template>
 
-  <article v-if="userStore.selectedClass"
+  <section v-if="userStore.selectedClass"
     class="max-w-md w-full  bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-xl p-6 space-y-4 border border-gray-300 dark:border-gray-700">
     <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white">
       {{ userStore.selectedClass.name }}
@@ -42,6 +42,6 @@ const userStore = useUserStore()
         </li>
       </ul>
     </div>
-  </article>
+  </section>
 
 </template>
