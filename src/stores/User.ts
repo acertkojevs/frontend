@@ -22,7 +22,19 @@ const userData = ref<ClassData>({
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-        stamina: 100,
+        inventory: {
+          helmet: null,
+          chest: null,
+          gloves: null,
+          boots: null,
+          weapon: null,
+          ring: null,
+          amulet: null,
+          cape: null,
+          offhand: null,
+          trinket: null,
+          legs: null
+        },
         attributes: {
           vitality: 0,
           endurance: 0,
@@ -48,7 +60,19 @@ const userData = ref<ClassData>({
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-        stamina: 100,
+         inventory: {
+          helmet: null,
+          chest: null,
+          gloves: null,
+          boots: null,
+          weapon: null,
+          ring: null,
+          amulet: null,
+          cape: null,
+          offhand: null,
+          trinket: null,
+          legs: null
+        },
         attributes: {
           vitality: 0,
           endurance: 0,
@@ -74,7 +98,19 @@ const userData = ref<ClassData>({
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-        stamina: 100,
+         inventory: {
+          helmet: null,
+          chest: null,
+          gloves: null,
+          boots: null,
+          weapon: null,
+          ring: null,
+          amulet: null,
+          cape: null,
+          offhand: null,
+          trinket: null,
+          legs: null
+        },
         attributes: {
           vitality: 0,
           endurance: 0,
@@ -152,7 +188,6 @@ export const useUserStore = defineStore('user', () => {
       selectedClass.baseStats.level++;
       selectedClass.baseStats.maxHealth += 10; // Increase max health on level up
       selectedClass.baseStats.health = selectedClass.baseStats.maxHealth; // Restore health on level up
-      selectedClass.baseStats.stamina += 2; // Increase max stamina on level up
       selectedClass.baseStats.xp -= selectedClass.baseStats.xpToNextLevel;
       selectedClass.baseStats.xpToNextLevel = Math.floor(baseXP * Math.pow(selectedClass.baseStats.level, exponent)); // Increase the XP needed for the next level
       selectedClass.baseStats.unspentSkillPoints++;

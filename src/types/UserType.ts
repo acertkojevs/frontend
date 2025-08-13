@@ -1,5 +1,6 @@
 import type { Skill } from "./SkillType";
 import type { GameMonster } from "./MonsterType";
+import type { Inventory } from "./ItemType";
 
 export interface ClassAttributes {
   vitality: number;
@@ -20,9 +21,9 @@ interface ClassStats {
   maxHealth: number;
   healthRegen: number;
   healthRegenInterval: number;
-  stamina: number;
   attributes: ClassAttributes;
   skills?: Skill[];
+  inventory: Inventory;
 }
 
 interface GameClass {

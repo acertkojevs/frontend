@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User.ts'
-import { computed } from 'vue';
 import HeroSection from '@/components/HeroSection.vue';
 
 const userStore = useUserStore()
-const selectedclass = computed(() => {
-  const index = userStore.userData.selectedClass;
-  return index >= 0 ? userStore.userData.classes[index] : null;
-});
 
 function selectClass(classIndex: number) {
   userStore.userData.selectedClass = classIndex;
