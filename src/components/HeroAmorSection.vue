@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SlotName } from '@/types/ItemType';
 import { useUserStore } from '@/stores/User';
-import items from '../types/ItemType';
+// import items from '../types/ItemType';
 import { Icon } from "@iconify/vue";
 
 const userStore = useUserStore();
@@ -35,7 +35,7 @@ function getSlotIcon(slot: SlotName) {
     if (!itemId) {
       return placeholderIcons[slot] ?? "/placeholders/default.png";
     }
-    return items[itemId]?.icon ?? placeholderIcons[slot] ?? "/placeholders/default.png";
+    // return items[itemId]?.icon ?? placeholderIcons[slot] ?? "/placeholders/default.png";
   }
 
   // fallback if no selected class

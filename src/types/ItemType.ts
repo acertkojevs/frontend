@@ -13,28 +13,74 @@ export type SlotName =
 
 export type Inventory = Record<SlotName, string | null>;
 
-interface Item {
-  id: string;
+export type EquipmentSlot =
+  | "helmet"
+  | "chest"
+  | "gloves"
+  | "boots"
+  | "weapon"
+  | "ring"
+  | "amulet"
+  | "cape"
+  | "offhand"
+  | "legs"
+  | "trinket";
+
+export interface BaseItem {
+  id: number;
   icon: string;
+  name: string;
+  type: ItemCategory;
+  slot?: EquipmentSlot;
 }
 
-const items: Record<string, Item> = {
-  sword001: { id: 'sword001', icon: '/icons/sword.png' },
-  sword002: { id: 'sword001', icon: '/icons/sword.png' },
-  sword003: { id: 'sword001', icon: '/icons/sword.png' },
-  sword004: { id: 'sword001', icon: '/icons/sword.png' },
-  sword021: { id: 'sword001', icon: '/icons/sword.png' },
-  sword12: { id: 'sword001', icon: '/icons/sword.png' },
-  sword0324: { id: 'sword001', icon: '/icons/sword.png' },
-  sword0012: { id: 'sword001', icon: '/icons/sword.png' },
-  sword02: { id: 'sword001', icon: '/icons/sword.png' },
-  sword0312: { id: 'sword001', icon: '/icons/sword.png' },
-  sword00231: { id: 'sword001', icon: '/icons/sword.png' },
-  sword0023423: { id: 'sword001', icon: '/icons/sword.png' },
-  sword034: { id: 'sword001', icon: '/icons/sword.png' },
-  sword012: { id: 'sword001', icon: '/icons/sword.png' },
-  sword011: { id: 'sword001', icon: '/icons/sword.png' },
-  sword0112: { id: 'sword001', icon: '/icons/sword.png' },
-};
+export type ItemCategory =
+  | "armor"
+  | "weapon"
+  | "consumable"
+  | "misc";
 
-export default items;
+export interface ArmorItem extends BaseItem {
+  type: "armor";
+  slot: Exclude<EquipmentSlot, "weapon">;
+  requirements?: {
+    level?: number;
+  };
+}
+
+export interface WeaponItem extends BaseItem {
+  type: "weapon";
+  slot: "weapon" | "offhand";
+  damage: number;
+  requirements?: {
+    level?: number;
+  };
+}
+
+export interface ConsumableItem extends BaseItem {
+  type: "consumable";
+  effect: string;
+}
+
+export interface MiscItem extends BaseItem {
+  type: "misc";
+}
+
+export type GameItem =
+  | ArmorItem
+  | WeaponItem
+  | ConsumableItem
+  | MiscItem;
+
+
+export const items: GameItem [] = [
+  {
+    id: 1001,
+    icon: "icons/wooden_sword.png",
+    name: "Wooden Sword",
+    type: "weapon",
+    slot: "weapon",
+    damage: 5,
+    requirements: { level: 1 }
+  },
+]

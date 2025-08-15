@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import router from '@/router';
-
+import { defaultUserData } from "@/stores/User";
 
 function deleteData() {
-  localStorage.removeItem("data")
-  router.push({ name: 'landing' });
+  // localStorage.removeItem("data");
+  localStorage.setItem("data", JSON.stringify(defaultUserData));
+  router.push({ name: "landing" });
 }
 
 </script>

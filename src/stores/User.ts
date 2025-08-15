@@ -2,10 +2,20 @@ import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { ClassData, ClassAttributes } from '@/types/UserType';
 import type { DamageSkill } from '@/types/SkillType';
-// import { useMonsterStore } from './Monster';
 import type { GameMonster } from '@/types/MonsterType';
 
-const userData = ref<ClassData>({
+export const defaultUserData: ClassData  = {
+  Items: [
+     {
+      id: 1001,
+      icon: "icons/wooden_sword.png",
+      name: "Wooden Sword",
+      type: "weapon", // must match WeaponItem type
+      slot: "weapon", // must match WeaponItem slot type
+      damage: 5,
+      requirements: { level: 1 }
+    },
+  ],
   selectedClass: -1,
   selectedMonster: null,
   inBattle: false,
@@ -140,9 +150,8 @@ const userData = ref<ClassData>({
       }
     }
   ],
-
-});
-
+};
+const userData = ref<ClassData>({ ...defaultUserData });
 
 export const useUserStore = defineStore('user', () => {
 
@@ -154,8 +163,6 @@ export const useUserStore = defineStore('user', () => {
   const selectedMonster = computed(() => userData.value.selectedMonster);
   // const inBattle = ref(userData.value.inBattle);
   const battleResult = ref('');
-
-
 
   function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -272,9 +279,9 @@ async function castDamageSkill(skill: DamageSkill) {
     userData.value.inBattle = false; // Set inBattle to false when the battle is won
   }
 
-  watch(userData,(newValue) => {
-    localStorage.setItem('data', JSON.stringify(newValue));
-  }, { deep: true })
+  watch(userData, (newValue) => {
+      localStorage.setItem('data', JSON.stringify(newValue));
+  }, { deep: true });
 
   return {userData, loadUser, gainXP, levelUpStat, userVitalityRestore,userSkills, selectedClass, selectedMonster, battleResult, saveUser, getRandomInt, loseBattleFinishedModal}
 })

@@ -1,6 +1,6 @@
 import type { Skill } from "./SkillType";
 import type { GameMonster } from "./MonsterType";
-import type { Inventory } from "./ItemType";
+import type { GameItem, Inventory } from "./ItemType";
 
 export interface ClassAttributes {
   vitality: number;
@@ -32,6 +32,7 @@ interface GameClass {
 }
 
 export interface ClassData {
+  Items: GameItem[];
   selectedClass: number;
   selectedMonster?: GameMonster | null;
   classes: GameClass[];
