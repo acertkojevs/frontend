@@ -13,7 +13,7 @@ const monsterLocations = ref<Record<string, GameMonster[]>>({});
 function setMonsterInStorage(monsterID: number) {
   // monsterStore.addMonster(monsterID); // Use the first monster as a placeholder
   monsterStore.addMonster(monsterID); // Set the first monster as a placeholder
-  router.push({ name: 'battle' });
+  router.push({ name: 'combat' });
   // console.log("test", monsterID);
 }
 

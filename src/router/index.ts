@@ -4,7 +4,7 @@ import AppLandingView from '@/views/AppLandingView.vue'
 import AppSettingView from '@/views/AppSettingView.vue'
 import AppHeroesView from '@/views/AppHeroesView.vue'
 import AppDungeonView from '@/views/AppDungeonView.vue'
-import AppBattleView from '@/views/AppBattleView.vue'
+import AppCombatView from '@/views/AppCombatView.vue'
 import AppAchievementsView from '@/views/AppAchievementsView.vue'
 import AppInventory from '@/views/AppInventory.vue'
 
@@ -12,8 +12,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'landing', component: AppLandingView },
-    { path: '/dungeon', name: 'dungeon', component: AppDungeonView },
-    { path: '/battle', name: 'battle', component: AppBattleView },
+    { path: '/battle', name: 'battle', component: AppDungeonView },
+    { path: '/combat', name: 'combat', component: AppCombatView },
     { path: '/achievements', name: 'achievements', component: AppAchievementsView },
     { path: '/settings', name: 'settings', component: AppSettingView },
     { path: '/heroes', name: 'heroes', component: AppHeroesView },

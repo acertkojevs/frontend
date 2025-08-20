@@ -23,7 +23,8 @@ export const monstersData: GameMonster[] = [
         enabled: true,
         baseMinDamage: 1,
         baseMaxDamage: 3,
-        baseCooldown: 1000
+        baseCooldown: 1000,
+        progress: 0
       }
     ]
   },
@@ -42,14 +43,15 @@ export const monstersData: GameMonster[] = [
     skills: [
       {
         name: "Smash",
-        type: "damage" as const,
+        type: "damage",
         cooldown: 2000,
         minDamage: 10,
         maxDamage: 15,
         enabled: true,
         baseMinDamage: 10,
         baseMaxDamage: 15,
-        baseCooldown: 2000
+        baseCooldown: 2000,
+        progress: 0
       }
     ]
   },
@@ -68,14 +70,15 @@ export const monstersData: GameMonster[] = [
     skills: [
       {
         name: "Smash",
-        type: "damage" as const,
+        type: "damage",
         cooldown: 2000,
         minDamage: 10,
         maxDamage: 15,
         enabled: true,
         baseMinDamage: 10,
         baseMaxDamage: 15,
-        baseCooldown: 2000
+        baseCooldown: 2000,
+        progress: 0
       }
     ]
   }

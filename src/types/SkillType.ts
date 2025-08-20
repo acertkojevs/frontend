@@ -9,6 +9,7 @@ type BaseSkill = {
   cooldown: number;
   baseCooldown: number;
   enabled: boolean;
+  progress: number;
 };
 
 export type SkillType = 'damage' | 'heal' | 'buff' | 'debuff';

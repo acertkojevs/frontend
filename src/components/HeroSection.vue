@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/User.ts'
 const userStore = useUserStore()
 // const selectedclass = userStore.selectedClass;
 
+
 </script>
 
 <template>
@@ -42,6 +43,20 @@ const userStore = useUserStore()
         </li>
       </ul>
     </div>
+    <section class="border-t border-gray-300 dark:border-gray-700 pt-4">
+
+      <div v-for="skill in userStore.selectedClass.baseStats.skills" :key="skill.name">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">{{ skill.name }}</h2>
+
+        <!-- Progress bar -->
+        <progress class="progress w-56" :value="skill.progress" max="100"></progress>
+
+        <div>Cooldown: {{ skill.cooldown / 1000 }}s</div>
+        <div v-if="skill.type === 'damage'">
+          Damage: {{ skill.minDamage }} - {{ skill.maxDamage }}
+        </div>
+      </div>
+    </section>
   </section>
 
 </template>
