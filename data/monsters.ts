@@ -62,7 +62,7 @@ export const monstersData: GameMonster[] = [
     baseStats: {
       health: 200,
       maxHealth: 200,
-      healthRegenInterval: 1000,
+      healthRegenInterval: 2000,
       healthRegen: 1
     },
     skills: [

@@ -16,15 +16,16 @@ export const useMonsterStore = defineStore('monster', () => {
       return;
     }
 
-    if (!userData.selectedMonster) return;
+    if(userData.selectedMonster){
       if (userData.selectedMonster.baseStats.health + userData.selectedMonster.baseStats.healthRegen >= userData.selectedMonster.baseStats.maxHealth) {
         userData.selectedMonster.baseStats.health = userData.selectedMonster.baseStats.maxHealth;
       } else {
-        userData.selectedMonster.baseStats.health += userData.selectedMonster.baseStats.healthRegen;
+          userData.selectedMonster.baseStats.health += userData.selectedMonster.baseStats.healthRegen;
       }
-    console.log("Monster Vitality restored to", userData.selectedMonster.baseStats.health);
+      console.log("Monster Vitality restored to", userData.selectedMonster.baseStats.health);
 
-    setTimeout(monsterVitalityRestore, userData.selectedMonster.baseStats.healthRegenInterval);
+      setTimeout(monsterVitalityRestore, userData.selectedMonster.baseStats.healthRegenInterval);
+    }
   }
 
   async function monsterSkills() {
