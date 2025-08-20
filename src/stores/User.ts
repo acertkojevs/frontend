@@ -30,7 +30,9 @@ export const defaultUserData: ClassData  = {
         unspentSkillPoints: 0,
         health: 100,
         maxHealth: 100,
+        baseMaxHealth: 100,
         healthRegen: 1,
+        baseHealthRegen: 1,
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
@@ -70,7 +72,9 @@ export const defaultUserData: ClassData  = {
         unspentSkillPoints: 0,
         health: 100,
         maxHealth: 100,
+        baseMaxHealth: 100,
         healthRegen: 1,
+        baseHealthRegen: 1,
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
@@ -110,7 +114,9 @@ export const defaultUserData: ClassData  = {
         unspentSkillPoints: 0,
         health: 100,
         maxHealth: 100,
+        baseMaxHealth: 100,
         healthRegen: 1,
+        baseHealthRegen: 1,
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
@@ -229,8 +235,8 @@ export const useUserStore = defineStore('user', () => {
     if (attrs && stats)
     {
         // Vitality → HP
-      stats.maxHealth = stats.maxHealth + attrs.vitality * 15;
-      stats.healthRegen = attrs.vitality + Math.floor(attrs.vitality / 2); // Regen based on vitality
+      stats.maxHealth = stats.baseMaxHealth + attrs.vitality * 15;
+      stats.healthRegen = stats.baseHealthRegen + Math.floor(attrs.vitality / 2); // Regen based on vitality
 
       // endurance → cooldown reduction
       if(selectedClass.value.baseStats.skills) {

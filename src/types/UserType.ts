@@ -19,7 +19,9 @@ interface ClassStats {
   unspentSkillPoints: number;
   health: number;
   maxHealth: number;
+  baseMaxHealth: number;
   healthRegen: number;
+  baseHealthRegen: number;
   healthRegenInterval: number;
   attributes: ClassAttributes;
   skills?: Skill[];
