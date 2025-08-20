@@ -7,6 +7,7 @@ export type Skill =
 type BaseSkill = {
   name: string;
   cooldown: number;
+  baseCooldown: number;
   enabled: boolean;
 };
 
@@ -16,6 +17,8 @@ export interface DamageSkill extends BaseSkill {
   type: 'damage';
   minDamage: number;
   maxDamage: number;
+  baseMinDamage: number;
+  baseMaxDamage: number;
 }
 
 export interface HealSkill extends BaseSkill {

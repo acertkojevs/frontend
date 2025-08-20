@@ -28,10 +28,12 @@ export const defaultUserData: ClassData  = {
         xp: 0,
         xpToNextLevel: 25,
         unspentSkillPoints: 0,
-        health: 1,
+        health: 100,
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
+        dodge: 0,
+        critChance: 0,
         inventory: {
           helmet: null,
           chest: null,
@@ -49,7 +51,7 @@ export const defaultUserData: ClassData  = {
           vitality: 0,
           endurance: 0,
           power: 0,
-          dodge: 0,
+          agility: 0,
           resilience: 0,
           luck: 0,
         },
@@ -66,11 +68,13 @@ export const defaultUserData: ClassData  = {
         xp: 0,
         xpToNextLevel: 25,
         unspentSkillPoints: 0,
-        health: 1,
+        health: 100,
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-         inventory: {
+        dodge: 0,
+        critChance: 0,
+        inventory: {
           helmet: null,
           chest: null,
           gloves: null,
@@ -87,7 +91,7 @@ export const defaultUserData: ClassData  = {
           vitality: 0,
           endurance: 0,
           power: 0,
-          dodge: 0,
+          agility: 0,
           resilience: 0,
           luck: 0,
         },
@@ -104,11 +108,13 @@ export const defaultUserData: ClassData  = {
         xp: 0,
         xpToNextLevel: 25,
         unspentSkillPoints: 0,
-        health: 1,
+        health: 100,
         maxHealth: 100,
         healthRegen: 1,
         healthRegenInterval: 2000,
-         inventory: {
+        dodge: 0,
+        critChance: 0,
+        inventory: {
           helmet: null,
           chest: null,
           gloves: null,
@@ -125,7 +131,7 @@ export const defaultUserData: ClassData  = {
           vitality: 0,
           endurance: 0,
           power: 0,
-          dodge: 0,
+          agility: 0,
           resilience: 0,
           luck: 0,
         },
@@ -134,17 +140,23 @@ export const defaultUserData: ClassData  = {
             name: "Power Slash",
             type: "damage",
             cooldown: 2000,
+            baseCooldown: 2000,
             enabled: true,
             minDamage: 10,
-            maxDamage: 20
+            maxDamage: 20,
+            baseMinDamage: 10,
+            baseMaxDamage: 20
           },
           {
             name: "Fireball",
             type: "damage",
             cooldown: 5000,
+            baseCooldown: 5000,
             enabled: true,
             minDamage: 15,
-            maxDamage: 30
+            maxDamage: 30,
+            baseMinDamage: 15,
+            baseMaxDamage: 30
           },
         ]
       }
@@ -183,30 +195,65 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function gainXP(xp: number) {
-    const selectedClass = userData.value.classes[userData.value.selectedClass];
+    // const selectedClass = userData.value.classes[userData.value.selectedClass];
 
-    if (selectedClass.baseStats.level <= selectedClass.baseStats.maxLevel) {
-      selectedClass.baseStats.xp += xp;
+    if (selectedClass.value && selectedClass.value.baseStats.level <= selectedClass.value.baseStats.maxLevel) {
+      selectedClass.value.baseStats.xp += xp;
     }
 
-    if (selectedClass.baseStats.xp >= selectedClass.baseStats.xpToNextLevel) { //level up
+    if (selectedClass.value && selectedClass.value.baseStats.xp >= selectedClass.value.baseStats.xpToNextLevel) { //level up
       const baseXP = 25;
       const exponent = 1.2;
-      selectedClass.baseStats.level++;
-      selectedClass.baseStats.maxHealth += 10; // Increase max health on level up
-      selectedClass.baseStats.health = selectedClass.baseStats.maxHealth; // Restore health on level up
-      selectedClass.baseStats.xp -= selectedClass.baseStats.xpToNextLevel;
-      selectedClass.baseStats.xpToNextLevel = Math.floor(baseXP * Math.pow(selectedClass.baseStats.level, exponent)); // Increase the XP needed for the next level
-      selectedClass.baseStats.unspentSkillPoints++;
+      selectedClass.value.baseStats.level++;
+      selectedClass.value.baseStats.maxHealth += 10; // Increase max health on level up
+      selectedClass.value.baseStats.health = selectedClass.value.baseStats.maxHealth; // Restore health on level up
+      selectedClass.value.baseStats.xp -= selectedClass.value.baseStats.xpToNextLevel;
+      selectedClass.value.baseStats.xpToNextLevel = Math.floor(baseXP * Math.pow(selectedClass.value.baseStats.level, exponent)); // Increase the XP needed for the next level
+      selectedClass.value.baseStats.unspentSkillPoints++;
     }
   }
 
   function levelUpStat(stat: keyof ClassAttributes) {
-    const selectedClass = userData.value.classes[userData.value.selectedClass];
-    if (selectedClass.baseStats.unspentSkillPoints > 0) {
-      selectedClass.baseStats.attributes[stat] += 1;
-      selectedClass.baseStats.unspentSkillPoints -= 1;
+    if (selectedClass.value && selectedClass.value.baseStats.unspentSkillPoints > 0) {
+      selectedClass.value.baseStats.attributes[stat] += 1;
+      selectedClass.value.baseStats.unspentSkillPoints -= 1;
+      recalculateStats();
     }
+  }
+
+  function recalculateStats() {
+    const stats = selectedClass.value?.baseStats;
+    const attrs = selectedClass.value?.baseStats.attributes;
+
+
+    if (attrs && stats)
+    {
+        // Vitality → HP
+      stats.maxHealth = stats.maxHealth + attrs.vitality * 15;
+      stats.healthRegen = attrs.vitality + Math.floor(attrs.vitality / 2); // Regen based on vitality
+
+      // endurance → cooldown reduction
+      if(selectedClass.value.baseStats.skills) {
+        for (const skill of selectedClass.value.baseStats.skills ) {
+          skill.cooldown = skill.baseCooldown * (1 - selectedClass.value.baseStats.attributes.endurance * 0.005);
+
+          // power → damage
+          if(skill.type === 'damage') {
+            skill.minDamage = skill.baseMinDamage + Math.floor(attrs.power * 1);
+            skill.maxDamage = skill.baseMaxDamage + Math.floor(attrs.power * 1);
+          }
+        }
+      }
+
+      // Agility → dodge chance
+      stats.dodge = attrs.agility * 0.2; // % chance to dodge
+
+      // critChance → critical hit chance
+      stats.critChance = attrs.luck * 0.5; // % chance to
+
+      // // resilience (need to implement)
+    }
+
   }
 
   async function userVitalityRestore() {

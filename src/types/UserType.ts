@@ -6,7 +6,7 @@ export interface ClassAttributes {
   vitality: number;
   endurance: number;
   power: number;
-  dodge: number;
+  agility: number;
   resilience: number;
   luck: number;
 }
@@ -24,6 +24,8 @@ interface ClassStats {
   attributes: ClassAttributes;
   skills?: Skill[];
   inventory: Inventory;
+  dodge: number;
+  critChance: number;
 }
 
 interface GameClass {
