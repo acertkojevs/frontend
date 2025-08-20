@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import monstersData from '@/../data/monsters.json';
+import monstersData from '../../data/monsters';
 import type { GameMonster } from '@/types/MonsterType';
 import { useUserStore } from './User';
 import type { DamageSkill } from '@/types/SkillType';

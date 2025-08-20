@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import monstersData from '@/../data/monsters.json';
+import monstersData from '../../data/monsters';
 import type { GameMonster } from '@/types/MonsterType';
 import { useMonsterStore } from '@/stores/Monster';
 import { useRouter } from 'vue-router'
@@ -19,7 +19,7 @@ function setMonsterInStorage(monsterID: number) {
 
 onMounted(() => {
   // Group monsters by location
-  for (const monster of monstersData as GameMonster[]) {
+  for (const monster of monstersData) {
     const loc = monster.location;
     if (!monsterLocations.value[loc]) {
       monsterLocations.value[loc] = [];
