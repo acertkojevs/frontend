@@ -23,10 +23,21 @@ const monster = computed(() => userStore.userData.selectedMonster);
     <div class="text-xs text-gray-600 mb-4">
       HP Regen: {{ monster?.baseStats.healthRegen }} HP / {{ monster!.baseStats.healthRegenInterval / 1000 }}s
     </div>
-    <!-- <div v-for="skill in monster?.skills" class="text-xs text-gray-600 mb-1">
-      <strong>{{ skill.name }}:</strong> {{ skill.minDamage }} - {{ skill.maxDamage }} damage, Cooldown: {{
-        skill.cooldown / 1000 }}s
-    </div> -->
+
     <div class="text-xs text-gray-600">XP Reward: {{ monster?.xp }}</div>
+    <section class="border-t border-gray-300 dark:border-gray-700 pt-4">
+
+      <div v-for="skill in userStore.selectedMonster?.skills" :key="skill.name">
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">{{ skill.name }}</h2>
+
+        <!-- Progress bar -->
+        <progress class="progress w-56 text-gray-800" :value="skill.progress" max="100"></progress>
+
+        <div class="text-gray-800">Cooldown: {{ skill.cooldown / 1000 }}s</div>
+        <div v-if="skill.type === 'damage'" class="text-gray-800">
+          Damage: {{ skill.minDamage }} - {{ skill.maxDamage }}
+        </div>
+      </div>
+    </section>
   </article>
 </template>

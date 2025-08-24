@@ -278,37 +278,37 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function userSkills() {
-  if (!selectedClass.value || !selectedClass.value.baseStats.skills) return;
+    if (!selectedClass.value || !selectedClass.value.baseStats.skills) return;
 
-  for (const skill of selectedClass.value.baseStats.skills) {
-    if (skill.enabled && skill.type === 'damage') {
-      skill.progress = 0; // start at 0
-      const cooldown = skill.cooldown;
-      const intervalTime = 50; // update every 50ms
-      let elapsed = 0;
+    for (const skill of selectedClass.value.baseStats.skills) {
+      if (skill.enabled && skill.type === 'damage') {
+        skill.progress = 0; // start at 0
+        const cooldown = skill.cooldown;
+        const intervalTime = 10; // update every 10ms
+        let elapsed = 0;
 
-      function tick() {
-        if (!userData.value.inBattle) {
-          skill.progress = 0;
-          return; // stop ticking if battle ends
+        function tick() {
+          if (!userData.value.inBattle) {
+            skill.progress = 0;
+            return; // stop ticking if battle ends
+          }
+
+          elapsed += intervalTime;
+          skill.progress = Math.min((elapsed / cooldown) * 100, 100);
+
+          if (elapsed >= cooldown) {
+            castDamageSkill(skill as DamageSkill);
+            elapsed = 0;       // restart cooldown
+            skill.progress = 0; // reset progress visually
+          }
+
+          setTimeout(tick, intervalTime);
         }
 
-        elapsed += intervalTime;
-        skill.progress = Math.min((elapsed / cooldown) * 100, 100);
-
-        if (elapsed >= cooldown) {
-          castDamageSkill(skill as DamageSkill);
-          elapsed = 0;       // restart cooldown
-          skill.progress = 0; // reset progress visually
-        }
-
-        setTimeout(tick, intervalTime);
+        tick(); // start ticking
       }
-
-      tick(); // start ticking
     }
   }
-}
 
 
   async function castDamageSkill(skill: DamageSkill) {
