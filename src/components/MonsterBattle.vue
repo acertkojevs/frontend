@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/User';
 import { computed } from 'vue';
+import { useItemStore } from '@/stores/Item';
 
 const userStore = useUserStore();
+const itemStore = useItemStore();
 const monster = computed(() => userStore.userData.selectedMonster);
+
+const monsterItems = computed(() =>
+  monster.value?.dropTable.map(drop => ({
+    ...drop,
+    item: itemStore.getItemById(drop.itemId),
+  }))
+);
 
 </script>
 
@@ -23,7 +32,13 @@ const monster = computed(() => userStore.userData.selectedMonster);
     <div class="text-xs text-gray-600 mb-4">
       HP Regen: {{ monster?.baseStats.healthRegen }} HP / {{ monster!.baseStats.healthRegenInterval / 1000 }}s
     </div>
-
+    <!-- Drops -->
+    <div class="text-xs text-gray-600">Drops</div>
+    <ul class="text-xs text-gray-600 mb-4">
+      <li v-for="drop in monsterItems" :key="drop.itemId">
+        {{ drop.item?.name }} Drop Chance: {{ (drop.dropChance * 100) }}%
+      </li>
+    </ul>
     <div class="text-xs text-gray-600">XP Reward: {{ monster?.xp }}</div>
     <section class="border-t border-gray-300 dark:border-gray-700 pt-4">
 

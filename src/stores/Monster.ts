@@ -31,15 +31,6 @@ export const useMonsterStore = defineStore('monster', () => {
   }
 
   async function monsterSkills() {
-    // if (!userData.selectedMonster?.skills) return;
-
-    // for (const skill of userData.selectedMonster?.skills) {
-    //   if (skill.enabled && skill.type === 'damage') {
-    //     // Start casting *after* cooldown delay for the first hit
-    //     setTimeout(() => castDamageSkill(skill), skill.cooldown);
-    //   }
-    // }
-
     if (!userData.selectedMonster?.skills) return
     for (const skill of userData.selectedMonster.skills) {
       if (skill.enabled && skill.type === 'damage') {

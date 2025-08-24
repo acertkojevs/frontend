@@ -1,22 +1,22 @@
-import type { GameMonster } from '@/types/MonsterType';
+import type { GameMonster } from '@/types/MonsterType'
 
 export const monstersData: GameMonster[] = [
   {
     id: 0,
-    name: "Slime",
+    name: 'Slime',
     level: 1,
     xp: 5,
-    location: "Forest",
+    location: 'Forest',
     baseStats: {
       health: 30,
       maxHealth: 30,
       healthRegenInterval: 1000,
-      healthRegen: 1
+      healthRegen: 1,
     },
     skills: [
       {
-        name: "Slash",
-        type: "damage",
+        name: 'Slash',
+        type: 'damage',
         cooldown: 1000,
         minDamage: 1,
         maxDamage: 3,
@@ -24,26 +24,27 @@ export const monstersData: GameMonster[] = [
         baseMinDamage: 1,
         baseMaxDamage: 3,
         baseCooldown: 1000,
-        progress: 0
-      }
-    ]
+        progress: 0,
+      },
+    ],
+    dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001
   },
   {
     id: 1,
-    name: "Knight",
+    name: 'Knight',
     level: 3,
     xp: 15,
-    location: "Castle",
+    location: 'Castle',
     baseStats: {
       health: 100,
       maxHealth: 100,
       healthRegenInterval: 1000,
-      healthRegen: 1
+      healthRegen: 1,
     },
     skills: [
       {
-        name: "Smash",
-        type: "damage",
+        name: 'Smash',
+        type: 'damage',
         cooldown: 2000,
         minDamage: 10,
         maxDamage: 15,
@@ -51,26 +52,27 @@ export const monstersData: GameMonster[] = [
         baseMinDamage: 10,
         baseMaxDamage: 15,
         baseCooldown: 2000,
-        progress: 0
-      }
-    ]
+        progress: 0,
+      },
+    ],
+    dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001
   },
   {
     id: 2,
-    name: "Red Golem",
+    name: 'Red Golem',
     level: 5,
     xp: 40,
-    location: "Castle",
+    location: 'Castle',
     baseStats: {
       health: 200,
       maxHealth: 200,
       healthRegenInterval: 2000,
-      healthRegen: 1
+      healthRegen: 1,
     },
     skills: [
       {
-        name: "Smash",
-        type: "damage",
+        name: 'Smash',
+        type: 'damage',
         cooldown: 2000,
         minDamage: 10,
         maxDamage: 15,
@@ -78,10 +80,11 @@ export const monstersData: GameMonster[] = [
         baseMinDamage: 10,
         baseMaxDamage: 15,
         baseCooldown: 2000,
-        progress: 0
-      }
-    ]
-  }
-];
+        progress: 0,
+      },
+    ],
+    dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001
+  },
+]
 
-export default monstersData;
+export default monstersData
