@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 import type { GameItem } from '@/types/ItemType'
+import type { GameMonster } from '@/types/MonsterType'
+import { useUserStore } from './User'
+import { ref } from 'vue'
 
 export const items: GameItem[] = [
   {
@@ -14,11 +17,28 @@ export const items: GameItem[] = [
 ]
 
 export const useItemStore = defineStore('item', () => {
-  // function getItemById(id: number) {
-  //   return items.find((item) => item.id === id)
-  // }
+  const userStore = useUserStore()
 
   const getItemById = (id: number) => items.find((item) => item.id === id)
+  const calculateDrop = (dropChance: number) => Math.random() < dropChance
+  const gainedItems = ref<GameItem[]>([])
 
-  return { getItemById }
+  function addItemDrops(monster: GameMonster) {
+    gainedItems.value = []
+    monster.dropTable.forEach((item) => {
+      console.log('Processing drop for itemId:', item.itemId, 'with dropChance:', item.dropChance)
+      const droppedItem = getItemById(item.itemId)
+      if (droppedItem) {
+        if (calculateDrop(item.dropChance)) {
+          userStore.userData.Items.push(droppedItem)
+          gainedItems.value.push(droppedItem)
+          console.log('added drop:', item.itemId)
+        } else {
+          console.log('No drop for itemId:', item.itemId)
+        }
+      }
+    })
+  }
+
+  return { getItemById, addItemDrops, gainedItems }
 })

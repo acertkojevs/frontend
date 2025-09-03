@@ -6,10 +6,12 @@ import { useUserStore } from '@/stores/User';
 // import monstersData from '@/../data/monsters.json';
 // import type { GameMonster } from '@/types/MonsterType';
 import { useMonsterStore } from '@/stores/Monster';
+import { useItemStore } from '@/stores/Item';
 
 
 const userStore = useUserStore();
 const monsterStore = useMonsterStore();
+const itemStore = useItemStore();
 
 async function startBattle() {
   // const monster = userStore.userData.selectedMonster;
@@ -50,6 +52,9 @@ function rebattle() {
     <div class="modal-box">
       <h3 class="text-lg font-bold">You won</h3>
       <p class="py-4">You gained {{ userStore.selectedMonster?.xp }} xp!</p>
+      <div v-for="item in itemStore.gainedItems" :key="item.id">
+        {{ item.name }}
+      </div>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn" @click="rebattle">Fight Again</button>
