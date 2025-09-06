@@ -100,7 +100,7 @@ export const useMonsterStore = defineStore('monster', () => {
   }
 
   function getFreshMonster(monsterId: number): GameMonster {
-    return monstersData[monsterId]
+    return JSON.parse(JSON.stringify(monstersData[monsterId]))
   }
 
   function addMonster(monsterId: number) {
