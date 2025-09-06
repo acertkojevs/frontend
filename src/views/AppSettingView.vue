@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/User';
 const userStore = useUserStore();
 
 function deleteData() {
-  userStore.userData = JSON.parse(JSON.stringify(defaultUserData));
+  Object.assign(userStore.userData, JSON.parse(JSON.stringify(defaultUserData)));
   localStorage.setItem("data", JSON.stringify(defaultUserData));
   router.push({ name: "landing" });
 }
