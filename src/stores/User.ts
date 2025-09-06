@@ -150,18 +150,20 @@ export const defaultUserData: ClassData = {
             baseMinDamage: 10,
             baseMaxDamage: 20,
             progress: 0,
+            requiredLevel: 1,
           },
           {
             name: 'Fireball',
             type: 'damage',
             cooldown: 5000,
             baseCooldown: 5000,
-            enabled: true,
+            enabled: false,
             minDamage: 15,
             maxDamage: 30,
             baseMinDamage: 15,
             baseMaxDamage: 30,
             progress: 0,
+            requiredLevel: 10,
           },
         ],
       },
@@ -225,6 +227,14 @@ export const useUserStore = defineStore('user', () => {
         baseXP * Math.pow(selectedClass.value.baseStats.level, exponent),
       ) // Increase the XP needed for the next level
       selectedClass.value.baseStats.unspentSkillPoints++
+
+      // unlock skill if available
+      selectedClass.value.baseStats.skills?.forEach((skill) => {
+        if (skill.requiredLevel === selectedClass.value?.baseStats.level) {
+          skill.enabled = true
+          console.log(`Skill unlocked: ${skill.name}`)
+        }
+      })
     }
   }
 

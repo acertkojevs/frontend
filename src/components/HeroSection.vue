@@ -45,7 +45,7 @@ const userStore = useUserStore()
     </div>
     <section class="border-t border-gray-300 dark:border-gray-700 pt-4">
 
-      <div v-for="skill in userStore.selectedClass.baseStats.skills" :key="skill.name">
+      <div v-for="skill in userStore.selectedClass.baseStats.skills?.filter(skill => skill.enabled)" :key="skill.name">
         <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">{{ skill.name }}</h2>
 
         <!-- Progress bar -->

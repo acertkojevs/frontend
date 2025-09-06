@@ -25,6 +25,7 @@ export const monstersData: GameMonster[] = [
         baseMaxDamage: 3,
         baseCooldown: 1000,
         progress: 0,
+        requiredLevel: 1,
       },
     ],
     dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001
@@ -53,6 +54,7 @@ export const monstersData: GameMonster[] = [
         baseMaxDamage: 15,
         baseCooldown: 2000,
         progress: 0,
+        requiredLevel: 1,
       },
     ],
     dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001
@@ -81,6 +83,7 @@ export const monstersData: GameMonster[] = [
         baseMaxDamage: 15,
         baseCooldown: 2000,
         progress: 0,
+        requiredLevel: 1,
       },
     ],
     dropTable: [{ itemId: 1001, dropChance: 1 }], // 50% chance to drop item with id 1001

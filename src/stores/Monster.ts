@@ -99,12 +99,14 @@ export const useMonsterStore = defineStore('monster', () => {
     userData.selectedMonster = monster
   }
 
-  function getFreshMonster(id: number): GameMonster {
-    return JSON.parse(JSON.stringify(monstersData[id]))
+  function getFreshMonster(monsterId: number): GameMonster {
+    console.log(monstersData[monsterId])
+    return monstersData[monsterId]
   }
 
-  function addMonster(monster: number) {
-    setMonster(getFreshMonster(monster))
+  function addMonster(monsterId: number) {
+    console.log('Adding monster with ID:', monsterId)
+    setMonster(getFreshMonster(monsterId))
   }
 
   function clearMonster() {
