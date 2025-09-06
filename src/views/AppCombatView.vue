@@ -13,7 +13,7 @@ const userStore = useUserStore();
 const monsterStore = useMonsterStore();
 const itemStore = useItemStore();
 
-async function startBattle() {
+function startBattle() {
   // const monster = userStore.userData.selectedMonster;
   console.log('Starting battle with class:', userStore.selectedClass);
   console.log('Starting battle with monster:', userStore.selectedMonster);

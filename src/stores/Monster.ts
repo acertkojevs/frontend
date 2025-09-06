@@ -8,7 +8,7 @@ export const useMonsterStore = defineStore('monster', () => {
   const userStore = useUserStore()
   const userData = useUserStore().userData
 
-  async function monsterVitalityRestore() {
+  function monsterVitalityRestore() {
     if (!userData.inBattle) {
       console.log('Not in battle, monster vitality restore skipped.')
       return
@@ -30,13 +30,13 @@ export const useMonsterStore = defineStore('monster', () => {
     }
   }
 
-  async function monsterSkills() {
+  function monsterSkills() {
     if (!userData.selectedMonster?.skills) return
     for (const skill of userData.selectedMonster.skills) {
       if (skill.enabled && skill.type === 'damage') {
         skill.progress = 0 // start at 0
         const cooldown = skill.cooldown
-        const intervalTime = 10 // update every 10ms
+        const intervalTime = 20 // update every 10ms
         let elapsed = 0
 
         function tick() {
@@ -62,7 +62,7 @@ export const useMonsterStore = defineStore('monster', () => {
     }
   }
 
-  async function castDamageSkill(skill: DamageSkill) {
+  function castDamageSkill(skill: DamageSkill) {
     if (
       !userData.inBattle ||
       !userData.selectedMonster ||
@@ -91,8 +91,6 @@ export const useMonsterStore = defineStore('monster', () => {
         return
       }
     }
-
-    setTimeout(() => castDamageSkill(skill), skill.cooldown)
   }
 
   function setMonster(monster: GameMonster) {

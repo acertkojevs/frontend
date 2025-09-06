@@ -279,7 +279,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function userVitalityRestore() {
+  function userVitalityRestore() {
     if (!selectedClass.value || !userData.value.inBattle) return
 
     if (
@@ -295,14 +295,14 @@ export const useUserStore = defineStore('user', () => {
     setTimeout(userVitalityRestore, selectedClass.value.baseStats.healthRegenInterval)
   }
 
-  async function userSkills() {
+  function userSkills() {
     if (!selectedClass.value || !selectedClass.value.baseStats.skills) return
 
     for (const skill of selectedClass.value.baseStats.skills) {
       if (skill.enabled && skill.type === 'damage') {
         skill.progress = 0 // start at 0
         const cooldown = skill.cooldown
-        const intervalTime = 10 // update every 10ms
+        const intervalTime = 20 // update every 50ms
         let elapsed = 0
 
         function tick() {
@@ -328,22 +328,12 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function castDamageSkill(skill: DamageSkill) {
-    if (
-      !userData.value.inBattle ||
-      !selectedMonster.value ||
-      selectedMonster.value.baseStats.health <= 0
-    )
-      return
-
-    console.log(`Damage skill casted: ${skill.name}`)
+  function castDamageSkill(skill: DamageSkill) {
+    if (!userData.value.inBattle || !selectedMonster.value) return
 
     const dmg = getRandomInt(skill.minDamage, skill.maxDamage)
     selectedMonster.value.baseStats.health -= dmg
-
-    if (selectedMonster.value.baseStats.health < 0) {
-      selectedMonster.value.baseStats.health = 0
-    }
+    if (selectedMonster.value.baseStats.health < 0) selectedMonster.value.baseStats.health = 0
 
     console.log(
       `${skill.name} hit for ${dmg}, monster HP: ${selectedMonster.value.baseStats.health}`,
@@ -352,11 +342,7 @@ export const useUserStore = defineStore('user', () => {
     if (selectedMonster.value.baseStats.health === 0) {
       winBattleFinishedModal(selectedMonster.value)
       userData.value.inBattle = false
-
-      return
     }
-
-    setTimeout(() => castDamageSkill(skill), skill.cooldown)
   }
 
   function winBattleFinishedModal(monster: GameMonster) {
