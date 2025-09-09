@@ -1,10 +1,12 @@
 import type { Skill } from './SkillType' // Ensure Skill is imported from the correct path
+import type { StatusEffect } from './StatusEffectType'
 
 interface MonsterStats {
   health: number
   maxHealth: number
   healthRegenInterval: number
   healthRegen: number
+  statusEffects: StatusEffect[]
 }
 
 export interface Drop {

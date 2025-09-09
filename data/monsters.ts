@@ -12,6 +12,7 @@ export const monstersData: GameMonster[] = [
       maxHealth: 30,
       healthRegenInterval: 1000,
       healthRegen: 1,
+      statusEffects: [],
     },
     skills: [
       {
@@ -41,6 +42,7 @@ export const monstersData: GameMonster[] = [
       maxHealth: 100,
       healthRegenInterval: 1000,
       healthRegen: 1,
+      statusEffects: [],
     },
     skills: [
       {
@@ -70,6 +72,7 @@ export const monstersData: GameMonster[] = [
       maxHealth: 200,
       healthRegenInterval: 2000,
       healthRegen: 1,
+      statusEffects: [],
     },
     skills: [
       {

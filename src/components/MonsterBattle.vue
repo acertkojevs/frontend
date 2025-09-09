@@ -14,6 +14,10 @@ const monsterItems = computed(() =>
   }))
 );
 
+// const statusEffects = computed(() => monster.value?.baseStats.statusEffects || [])
+
+
+
 </script>
 
 <template>
@@ -32,6 +36,27 @@ const monsterItems = computed(() =>
     <div class="text-xs text-gray-600 mb-4">
       HP Regen: {{ monster?.baseStats.healthRegen }} HP / {{ monster!.baseStats.healthRegenInterval / 1000 }}s
     </div>
+    <!-- effects -->
+    <div v-for="effect in userStore.selectedMonster?.baseStats.statusEffects" :key="effect.type"
+      class="flex items-center gap-2">
+      <div class="badge badge-success badge-lg flex items-center gap-2">
+        <!-- Effect name -->
+        <span class="text-sm">{{ effect.type.toUpperCase() }}</span>
+
+        <!-- Radial progress -->
+        <div class="radial-progress text-black-900"
+          :style="`--value: ${((effect.duration - effect.elapsed) / effect.duration) * 100}; --size: 18px;`"
+          :aria-label="`${Math.ceil((effect.duration - effect.elapsed) / 1000)}s remaining`">
+          <span class="text-xs">{{ Math.ceil((effect.duration - effect.elapsed) / 1000) }}s</span>
+        </div>
+      </div>
+
+
+
+      <!-- Status Effect Name -->
+      <span class="text-sm">{{ effect.type }}</span>
+    </div>
+
     <!-- Drops -->
     <div class="text-xs text-gray-600">Drops</div>
     <ul class="text-xs text-gray-600 mb-4">

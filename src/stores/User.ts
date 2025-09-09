@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 import type { ClassData, ClassAttributes } from '@/types/UserType'
 import type { DamageSkill } from '@/types/SkillType'
 import type { GameMonster } from '@/types/MonsterType'
+// import type { StatusEffect } from '@/types/StatusEffectType'
 import { useItemStore } from '../stores/Item'
+import { useStatusEffectsStore } from './StatusEffects'
 
 export const defaultUserData: ClassData = {
   Items: [
@@ -17,7 +19,7 @@ export const defaultUserData: ClassData = {
       requirements: { level: 1 },
     },
   ],
-  selectedClass: -1,
+  selectedClass: null,
   selectedMonster: null,
   inBattle: false,
   classes: [
@@ -37,6 +39,7 @@ export const defaultUserData: ClassData = {
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
+        statusEffects: [],
         inventory: {
           helmet: null,
           chest: null,
@@ -77,6 +80,7 @@ export const defaultUserData: ClassData = {
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
+        statusEffects: [],
         inventory: {
           helmet: null,
           chest: null,
@@ -117,6 +121,7 @@ export const defaultUserData: ClassData = {
         healthRegenInterval: 2000,
         dodge: 0,
         critChance: 0,
+        statusEffects: [],
         inventory: {
           helmet: null,
           chest: null,
@@ -140,30 +145,38 @@ export const defaultUserData: ClassData = {
         },
         skills: [
           {
-            name: 'Power Slash',
+            name: 'Shadow Strike',
             type: 'damage',
-            cooldown: 2000,
-            baseCooldown: 2000,
+            cooldown: 3000,
+            baseCooldown: 3000,
             enabled: true,
             minDamage: 10,
-            maxDamage: 20,
+            maxDamage: 15,
             baseMinDamage: 10,
-            baseMaxDamage: 20,
+            baseMaxDamage: 15,
             progress: 0,
             requiredLevel: 1,
           },
           {
-            name: 'Fireball',
+            name: 'Poison Blade',
             type: 'damage',
-            cooldown: 5000,
-            baseCooldown: 5000,
+            cooldown: 8000,
+            baseCooldown: 8000,
             enabled: false,
-            minDamage: 15,
-            maxDamage: 30,
-            baseMinDamage: 15,
-            baseMaxDamage: 30,
+            minDamage: 10,
+            maxDamage: 15,
+            baseMinDamage: 10,
+            baseMaxDamage: 15,
             progress: 0,
-            requiredLevel: 10,
+            requiredLevel: 2,
+            debuff: {
+              type: 'poison',
+              duration: 5000,
+              tickInterval: 1000,
+              tickDamage: 3,
+              target: 'monster',
+              elapsed: 0,
+            },
           },
         ],
       },
@@ -174,12 +187,10 @@ const userData = ref<ClassData>({ ...defaultUserData })
 
 export const useUserStore = defineStore('user', () => {
   const itemStore = useItemStore()
+  const statusEffectsStore = useStatusEffectsStore()
 
   // const selectedclass = userData.classes[userData.selectedClass];
-  const selectedClass = computed(() => {
-    const index = userData.value.selectedClass
-    return index >= 0 ? userData.value.classes[index] : null
-  })
+  const selectedClass = computed(() => userData.value.selectedClass)
   const selectedMonster = computed(() => userData.value.selectedMonster)
   // const inBattle = ref(userData.value.inBattle);
   const battleResult = ref('')
@@ -333,11 +344,17 @@ export const useUserStore = defineStore('user', () => {
 
     const dmg = getRandomInt(skill.minDamage, skill.maxDamage)
     selectedMonster.value.baseStats.health -= dmg
-    if (selectedMonster.value.baseStats.health < 0) selectedMonster.value.baseStats.health = 0
+    if (selectedMonster.value.baseStats.health < 0) {
+      selectedMonster.value.baseStats.health = 0
+    }
 
     console.log(
       `${skill.name} hit for ${dmg}, monster HP: ${selectedMonster.value.baseStats.health}`,
     )
+
+    if (skill.debuff) {
+      statusEffectsStore.applyStatusEffect(skill.debuff)
+    }
 
     if (selectedMonster.value.baseStats.health === 0) {
       winBattleFinishedModal(selectedMonster.value)

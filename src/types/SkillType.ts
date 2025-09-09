@@ -1,3 +1,5 @@
+import type { StatusEffect } from './StatusEffectType'
+
 export type Skill = DamageSkill | HealSkill | BuffSkill | DebuffSkill
 
 type BaseSkill = {
@@ -17,6 +19,7 @@ export interface DamageSkill extends BaseSkill {
   maxDamage: number
   baseMinDamage: number
   baseMaxDamage: number
+  debuff?: StatusEffect
 }
 
 export interface HealSkill extends BaseSkill {

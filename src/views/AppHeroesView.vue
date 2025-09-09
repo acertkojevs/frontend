@@ -5,8 +5,8 @@ import HeroSection from '@/components/HeroSection.vue';
 const userStore = useUserStore()
 
 function selectClass(classIndex: number) {
-  userStore.userData.selectedClass = classIndex;
-  console.log(`Selected class: ${userStore.userData.classes[classIndex]}`);
+  userStore.userData.selectedClass = userStore.userData.classes[classIndex];
+  console.log("Selected class:", userStore.userData.selectedClass)
 }
 </script>
 
