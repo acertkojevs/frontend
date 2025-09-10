@@ -6,6 +6,7 @@ export interface StatusEffect {
   duration: number // total duration in ms
   tickInterval?: number // optional, for periodic effects like poison
   tickDamage?: number // optional, for periodic damage
+  baseTickDamage?: number // optional, for effects that modify stats
   stacks?: number // optional, if effect can stack
   elapsed: number // time elapsed since application in ms
   target: StatusTarget
