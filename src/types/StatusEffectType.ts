@@ -1,5 +1,5 @@
 export type StatusEffectType = 'burning' | 'poison' | 'stunned' | 'frozen' | 'weakened'
-export type StatusTarget = 'user' | 'monster'
+export type StatusTarget = 'player' | 'monster'
 
 export interface StatusEffect {
   type: StatusEffectType

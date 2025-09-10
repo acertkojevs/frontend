@@ -9,48 +9,55 @@ export const useStatusEffectsStore = defineStore('statuseffects', () => {
     console.log('Applying status effect:', effect)
     effect.elapsed = 0
     if (effect.target === 'monster') {
+      // const target = effect.target
       userStore.selectedMonster?.baseStats.statusEffects.push(effect)
       console.log(`Applying status effect: ${effect.duration} for ${effect.duration}ms`)
-      const target = effect.target
-      runStatusEffect(effect, target)
+      runStatusEffect(effect)
+    } else if (effect.target === 'player') {
+      // const target = effect.target
+      userStore.userData.selectedClass?.baseStats.statusEffects.push(effect)
+      console.log(`Applying status effect: ${effect.duration} for ${effect.duration}ms`)
+      runStatusEffect(effect)
     }
   }
 
-  function runStatusEffect(effect: StatusEffect, targetType: 'player' | 'monster') {
-    // Pick the correct target object
-    const target =
-      targetType === 'player'
-        ? userStore.userData.selectedClass
-        : userStore.userData.selectedMonster
-
-    if (!target) return // no valid target
-
+  function runStatusEffect(effect: StatusEffect) {
     if (effect.type === 'poison') {
-      function tick() {
-        if (!userStore.userData.inBattle) return
+      poison(effect)
+    }
+  }
 
-        effect.elapsed += effect.tickInterval ?? 1000
+  function poison(effect: StatusEffect) {
+    const targetType = effect.target
 
-        // Apply damage
-        if (effect.tickDamage) {
-          userStore.selectedMonster!.baseStats.health -= effect.tickDamage
-          if (userStore.selectedMonster!.baseStats.health < 0) {
-            userStore.selectedMonster!.baseStats.health = 0
-          }
-        }
+    const stats =
+      targetType === 'monster'
+        ? userStore.selectedMonster!.baseStats
+        : userStore.userData.selectedClass!.baseStats
 
-        // Stop if expired
-        if (effect.elapsed < effect.duration && userStore.selectedMonster!.baseStats.health > 0) {
-          setTimeout(tick, effect.tickInterval ?? 1000)
-        } else {
-          // Remove effect
-          userStore.selectedMonster!.baseStats.statusEffects =
-            userStore.selectedMonster!.baseStats.statusEffects.filter((e) => e !== effect)
-        }
+    function tick() {
+      if (!userStore.userData.inBattle) return
+
+      effect.elapsed += effect.tickInterval ?? 1000
+
+      // Apply damage
+      if (effect.tickDamage) {
+        stats.health -= effect.tickDamage
+        if (stats.health < 0) stats.health = 0
       }
 
-      tick()
+      console.log(`${effect.type} tick: ${effect.tickDamage} damage, target HP: ${stats.health}`)
+
+      // Continue or expire
+      if (effect.elapsed < effect.duration && stats.health > 0) {
+        setTimeout(tick, effect.tickInterval ?? 1000)
+      } else {
+        stats.statusEffects = stats.statusEffects.filter((e) => e !== effect)
+        console.log(`${effect.type} expired on ${targetType}`)
+      }
     }
+
+    tick()
   }
 
   return { applyStatusEffect }
